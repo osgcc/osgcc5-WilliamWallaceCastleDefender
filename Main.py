@@ -2,16 +2,16 @@
 import pygame, sys
 from pygame.locals import *
 
+
 def main():
     pygame.init()
     fpsClock = pygame.time.Clock()
-    windowSurfaceObj = pygame.display.set_mode((1280,720))
+    windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallce Defender X-Treme 2140")
-
-
+    desertBackground = pygame.image.load('desert-background.jpg')
     #Main Loop
     while True:
-        #Not Much here as of now
+        windowSurfaceObj.blit(desertBackground,(0,0))
 
 
         for event in pygame.event.get():
@@ -35,6 +35,7 @@ def main():
                 elif event.key == K_ESCAPE:
                     pygame.event.post(pygame.event.Event(QUIT))
         pygame.display.update()
+        #pygame.display.flip()
         fpsClock.tick(30)
 
 
