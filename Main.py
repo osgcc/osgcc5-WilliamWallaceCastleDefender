@@ -29,6 +29,7 @@ def main():
     points = 0
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
+    gravityLimit = False
     #Main Loop
     while True:
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -58,8 +59,10 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
-                    arrow = Arrow(player.x,player.y+24,mousex,mousey)
-                    ArrowList.append(arrow)
+                    if player.Arrows - 1 >= 0:
+                        arrow = Arrow(player.x,player.y+24,mousex,mousey)
+                        ArrowList.append(arrow)
+                        player.Arrows -= 1
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -82,8 +85,15 @@ def main():
                     x = -10
                 #player.updatePlayerPos(x,0)
                 if y != 0:
-                    player.jet()
-                    skipFall = True
+                    if player.Gravity - 2 >= 0 and gravityLimit:
+                        player.jet()
+                        skipFall = True
+                        player.Gravity -= 2
+                    else:
+                        if player.Gravity >= 20:
+                            gravityLimit = True
+                        else:
+                            gravityLimit = False
                 if event.key == K_ESCAPE:
                     pygame.event.post(pygame.event.Event(QUIT))
             #else:
@@ -99,8 +109,15 @@ def main():
         if(x != 0 or y != 0):
             player.updatePlayerPos(x,0)
         if y != 0:
-            player.jet()
-            skipFall = True
+            if player.Gravity - 1 >= 0 and gravityLimit:
+                player.jet()
+                skipFall = True
+                player.Gravity -= 2
+            else:
+                if player.Gravity >= 20:
+                    gravityLimit = True
+                else:
+                    gravityLimit = False
 
         #player.updateVector(mousex,mousey)
         #Castle health bar
@@ -138,12 +155,23 @@ def main():
                 if chk:
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
-                i = i - 1
+            i = i - 1
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
+        if player.Arrows + 1 <= 20:
+            player.ArrowsRepl += .05
+            if player.ArrowsRepl >= 1.0:
+                player.Arrows += 1
+                player.ArrowsRepl = 0.0
+        if player.Gravity + 1 <= 100:
+            player.GravityRepl += .25
+            if player.GravityRepl >= 1.0:
+                player.Gravity += 1
+                player.GravityRepl = 0.0
+        print player.Gravity
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
