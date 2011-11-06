@@ -4,6 +4,7 @@ from pygame.locals import *
 from Player import *
 from Vector import *
 from Enemy import *
+from Arrow import *
 
 
 def main():
@@ -17,6 +18,10 @@ def main():
     player = Player()
     pygame.key.set_repeat(1,50)
     ArrowList = []
+
+    #Enemy variables
+    maxEnemies = 10
+    enemyList = []
 
     #Enemy variables
     maxEnemies = 10
@@ -44,10 +49,11 @@ def main():
                 sys.exit()
             elif event.type == MOUSEMOTION:
                 mousex, mousey = event.pos
-                #player.updateVector(mousex,mousey)
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
-                    blah = "blah"
+                    mousex, mousey = event.pos
+                    arrow = Arrow(player.x,player.y,mousex,mousey)
+                    ArrowList.append(arrow)
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -94,6 +100,13 @@ def main():
         #player.updatePos()
         if not skipFall:
             player.fall()
+
+        for i in range(len(ArrowList)):
+            chk = ArrowList[i].updateArrowPos()
+            if chk:
+                ArrowObj = ArrowList[i].ArrowObj
+                windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
+
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
         pygame.display.flip()
