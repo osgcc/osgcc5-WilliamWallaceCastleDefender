@@ -55,6 +55,12 @@ def main():
             elif event.type == MOUSEMOTION:
                 mousex, mousey = event.pos
                 player.updateVector(mousex,mousey)
+            elif event.type == MOUSEBUTTONDOWN:
+                myx, myy = event.pos
+                if(myx < player.x):
+                    player.updatePlayerSprite(18,1)
+                else:
+                    player.updatePlayerSprite(19,1)
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos

@@ -67,18 +67,28 @@ class Player(pygame.sprite.Sprite):
             self.vector.y = self.vector.y / (sqrt((self.vector.x*self.vector.x)+(self.vector.y*self.vector.y)))
 
     def updatePlayerPos(self,x,y):
-        self.image = (self.image + 1) % 8
+        #self.image = (self.image + 1) % 8
         x = int(x)
         y = int(y)
+        #if(x == 0):
+        #    if(self.image != 19 and self.image != 18):
+        #        self.updatePlayerSprite(17, 1)
+        
         if self.x + x < 1252 and self.x + x > -5:
             self.x += x
             self.rect = self.rect.move(x,0)
         if self.y + y < 600 and self.y + y > 0:
             self.y += y
             self.rect = self.rect.move(0,y)
+            self.updatePlayerSprite(16,1)
         if self.y + y > 600:
             self.rect = self.rect.move(0,600-self.y)
+            #self.updatePlayerSprite(17,1)
             self.y = 600
+        if(x < 0):
+            self.updatePlayerSprite(0, 8)
+        if(x > 0):
+            self.updatePlayerSprite(8,8)
 
     def updatePlayerSprite(self, framestart, totalframes):
         self.framenumber += 0.5
