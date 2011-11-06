@@ -260,12 +260,9 @@ def main():
                     soundObjectExplosion.play()
                     missileList.pop(i)
                     player.Lives -= 1
-                    if player.Lives <= 0:
-<<<<<<< HEAD
+                    if player.Lives <= 0 and playing == True:
                         retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                         playing = False
-=======
-                        gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     else:
                         player.ArrowsMax = 20
                         player.ArrowsReplRate = 0.05
@@ -273,7 +270,6 @@ def main():
                         player.MultiShot = False
                         player.MultiShot2 = False
                         player.gunmode = False
->>>>>>> origin/master
                     chk = False
                 if i<0:
                     count = -1
@@ -312,14 +308,11 @@ def main():
         while i >= 0:
             if player.rect.colliderect(enemyList[i].rect):
                 player.Lives -= 1
-<<<<<<< HEAD
-                exploList.append(Explo(enemyList[i].x, enemyList[i].y))
+                exploList.append(Explo(enemyList[i].x, enemyList[i].y,True))
                 soundObjectExplosion.play()
-=======
                 exploList.append(Explo(enemyList[i].x, enemyList[i].y, True))
->>>>>>> origin/master
                 enemyList.pop(i)
-                if player.Lives <= 0:
+                if player.Lives <= 0 and playing == True:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
                 else:
