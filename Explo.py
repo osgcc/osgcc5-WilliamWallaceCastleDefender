@@ -6,15 +6,22 @@ import os
 
 class Explo(pygame.sprite.Sprite):
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, player):
         pygame.sprite.Sprite.__init__(self)
         self.image = 0
         self.framenumber = 0
-        self.images = [pygame.image.load(os.path.join(os.curdir, 'expl1.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'expl2.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'expl3.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'expl4.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'expl5.png')).convert_alpha()]
+        if player: 
+            self.images = [pygame.image.load(os.path.join(os.curdir, 'pexpl1.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'pexpl2.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'pexpl3.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'pexpl4.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'pexpl5.png')).convert_alpha()]
+        else:
+            self.images = [pygame.image.load(os.path.join(os.curdir, 'expl1.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'expl2.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'expl3.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'expl4.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'expl5.png')).convert_alpha()]
         self.rect = self.images[self.image].get_rect()
         self.x = x
         self.y = y
