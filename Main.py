@@ -223,7 +223,7 @@ def main():
                         enx = enemyList[count].x
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
-                            exploList.append(Explo(enx, eny, True))
+                            exploList.append(Explo(enx, eny, False))
                             x = random.randint(0,100)
                             #print x
                             if x <= 90:
@@ -305,7 +305,7 @@ def main():
         while i >= 0:
             if player.rect.colliderect(enemyList[i].rect):
                 player.Lives -= 1
-                exploList.append(Explo(enemyList[i].x, enemyList[i].y, False))
+                exploList.append(Explo(enemyList[i].x, enemyList[i].y, True))
                 enemyList.pop(i)
                 if player.Lives <= 0:
                     gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
