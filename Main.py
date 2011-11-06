@@ -73,13 +73,20 @@ def main():
 
             enx = enemyList[count].x
             eny = enemyList[count].y
-            if random.randint(0,100) < 1: #1% chance that an enemy shoots
+            chance = 1
+            if enemyList[count].boss == True:
+                chance = 5
+            if random.randint(0,100) < chance: #1% chance that an enemy shoots
                 if enemyList[count].right:
                     speed = -enemyList[count].speed
                 else:
                     speed = enemyList[count].speed
                 tmp = random.randint(0,100)
-                if tmp < 30:
+                if chance == 10:
+                    for i in range(0,30):
+                        m = Missile(enx+random.randint(-180,180),eny+random.randint(-180,180),player.x+random.randint(-180,180),player.y+random.randint(-180,180),speed)
+                        missileList.append(m)
+                elif tmp < 30:
                     m = Missile(enx,eny,player.x,player.y+20, speed)
                     missileList.append(m)
                     m = Missile(enx,eny,player.x,player.y, speed)
@@ -100,7 +107,7 @@ def main():
                 else:
                     missileList.append(Missile(enx,eny,player.x,player.y, speed))
             if enemyList[count].updateEnemyPos(enemyList, count):
-                HP = HP -5
+                HP = HP - 2
                 if HP < 0:
                     HP = 0
                 exploList.append(Explo(enx, eny, False))
@@ -264,10 +271,10 @@ def main():
                             exploList.append(Explo(enx, eny, False))
                             x = random.randint(0,100)
                             #print x
-                            if x <= 20:
+                            if x <= 25:
                                 tmp = PowerUp(enx,eny)
                                 PowerUpList.append(tmp)
-                            elif x > 93:
+                            elif x > 95:
                                 b = Bomb(enx,eny)
                                 BombList.append(b)
                             soundObjectExplosion.play()
@@ -299,6 +306,8 @@ def main():
                     z = random.randint(0,1)
                     exploList.append(Explo(x, y, z))
                 BombList = []
+                missileList = []
+                arrowList = []
                 i = -1
             else:
                 windowSurfaceObj.blit(BombList[i].image, BombList[i].rect)
@@ -503,7 +512,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
-    if x < 3 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
+    if x < 5 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
         x = random.randint(0,1)
         if x == 1:
             right = True
@@ -513,7 +522,13 @@ def enemyGenerator(enemyList, maxEnemies):
         speed += random.randint(0, 4)
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
-            enemyList.append(Enemyflying(right, speed))
+            e = Enemyflying(right,speed)
+            if random.randint(0,20) < 1:
+                e.boss = True
+            else:
+                e.boss = False
+            enemyList.append(e)
+            #enemyList.append(Enemyflying(right, speed))
         else:
             enemyList.append(Enemy(right, speed))
 
