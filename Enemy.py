@@ -29,11 +29,15 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.x, self.y)
 
 
-    def updateEnemyPos(self):
+    def updateEnemyPos(self,enemyList, index):
         self.image = (self.image + 1) % 8
         if self.x + self.speed < 513 or self.x + self.speed > 745:
             self.x += self.speed
             self.rect = self.rect.move(self.speed,0)
+        else:
+            enemyList.pop(index)
+            return True
+        return False
 
     def swordHit(self, enemyList, index):
         self.HP = slef.HP - 5
