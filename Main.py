@@ -15,6 +15,7 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     pygame.key.set_repeat(1,50)
+    ArrowList = []
 
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
@@ -32,7 +33,7 @@ def main():
                 sys.exit()
             elif event.type == MOUSEMOTION:
                 mousex, mousey = event.pos
-                player.updateVector(mousex,mousey)
+                #player.updateVector(mousex,mousey)
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     blah = "blah"
