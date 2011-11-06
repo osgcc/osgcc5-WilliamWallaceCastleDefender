@@ -29,6 +29,7 @@ class Enemy(pygame.sprite.Sprite):
             self.y = 600
             self.speed = speed
         self.rect = self.rect.move(self.x, self.y)
+        self.boss = False
 
     def updateEnemySprite(self, framestart, totalframes):
         self.framenumber += 0.33

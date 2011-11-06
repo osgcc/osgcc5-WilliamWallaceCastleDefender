@@ -20,15 +20,15 @@ class PowerUp(pygame.sprite.Sprite):
         x = random.randint(0,100)
         if x < 10:
             self.type = 4
-        elif x < 40:
+        elif x < 20:
             self.type = 0
-        elif x < 70:
+        elif x < 50:
             self.type = 3
-        elif x < 90:
+        elif x < 60:
             self.type = 1
         elif x <= 100:
             self.type = 2
-        #0 = MaxArrows + 10
+        #0 = Repel
         #1 = Multi Shot 3 Arrows
         #2 = Rapid Fire (Infinite Arrows)
         #3 = Heal Castle

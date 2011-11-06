@@ -37,6 +37,8 @@ class Player(pygame.sprite.Sprite):
                     pygame.image.load(os.path.join(os.curdir, 'start.png')).convert_alpha(),
                     pygame.image.load(os.path.join(os.curdir, 'bowl.png')).convert_alpha(),
                     pygame.image.load(os.path.join(os.curdir, 'bowr.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'hurt.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'dead.png')).convert_alpha()
                     ]
 
         self.rect = self.images[self.image].get_rect()
@@ -49,13 +51,14 @@ class Player(pygame.sprite.Sprite):
         self.Arrows = 20
         self.ArrowsMax = 20
         self.ArrowsRepl = 0.0
-        self.ArrowsReplRate = 0.05
+        self.ArrowsReplRate = 0.1
         self.Gravity = 100
         self.GravityRepl = 0.0
         self.RapidFire = False
         self.MultiShot = False
         self.MultiShot2 = False
         self.Lives = 3
+        self.Repel = 30
 
     def updateVector(self,x,y):
 
