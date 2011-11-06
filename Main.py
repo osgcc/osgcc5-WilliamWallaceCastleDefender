@@ -4,7 +4,7 @@ from pygame.locals import *
 from Player import *
 from Vector import *
 from Enemy import *
-from Arrow import *
+from Enemyflying import *
 
 
 def main():
@@ -49,6 +49,7 @@ def main():
                 sys.exit()
             elif event.type == MOUSEMOTION:
                 mousex, mousey = event.pos
+                player.updateVector(mousex,mousey)
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
@@ -122,7 +123,10 @@ def enemyGenerator(enemyList, maxEnemies):
         else:
             right = False
         speed = random.randint(1, 15)
-        enemyList.append(Enemy(right, speed))
+        if random.randint(0, 100) < 33: # 33% chance enemy will be flying
+            enemyList.append(Enemyflying(right, speed))
+        else:
+            enemyList.append(Enemy(right, speed))
 
 #Menu function
 def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
