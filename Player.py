@@ -7,6 +7,10 @@ from math import sqrt
 
 class Player(pygame.sprite.Sprite):
 
+    bottom = 630
+    left = 0
+    right = 720
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = 0
@@ -19,16 +23,16 @@ class Player(pygame.sprite.Sprite):
                       pygame.image.load(os.path.join(os.curdir, 'spritel7.png')).convert_alpha(),
                       pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha()]
         self.rect = self.images[self.image].get_rect()
-        self.rect = self.rect.move(300,300)
+        self.rect = self.rect.move(300,600)
         self.vel = 10
-        self.x = 330
-        self.y = 330
+        self.x = 323
+        self.y = 624
         self.dir = 1 # 1: Right -1: Left
         self.vector = Vector(self.x,self.y)
 
 
     def updateVector(self,x,y):
-        
+
         diffX = x - self.x
         diffY = y - self.y
         if diffX != 0 and diffY!= 0:
@@ -45,9 +49,14 @@ class Player(pygame.sprite.Sprite):
 
     def updatePlayerPos(self,x,y):
         self.image = (self.image + 1) % 8
-        self.x += x
-        self.y += y
-        self.rect = self.rect.move(x,y)
+        print self.x + x
+        print self.y + y
+        if self.x + x < 1280 and self.x + x > 10:
+            self.x += x
+            self.rect = self.rect.move(x,0)
+        if self.y + y < 630 and self.y + y > 10:
+            self.y += y
+            self.rect = self.rect.move(0,y)
 
     def updateArrowPos(self):
         self.x += self.vector.x * self.vel
