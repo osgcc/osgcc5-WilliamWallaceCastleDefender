@@ -43,7 +43,7 @@ class Enemy(pygame.sprite.Sprite):
             self.updateEnemySprite(4,4)
         else:
             self.updateEnemySprite(0,4)
-        if self.x + self.speed < 513 or self.x + self.speed > 745:
+        if self.x + self.speed < 513 or self.x + self.speed > 715:
             self.x += self.speed
             self.rect = self.rect.move(self.speed,0)
         else:
