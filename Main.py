@@ -26,7 +26,7 @@ def main():
     soundDecoy = pygame.mixer.Sound('decoy.wav')
     soundPwp = pygame.mixer.Sound('powerup.wav')
     soundShld = pygame.mixer.Sound('zap2.wav')
-    desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
+    desertBackground = pygame.image.load(os.path.join(os.curdir, 'braveheart.jpg')).convert_alpha()
     SurfaceObjLife = pygame.image.load("life.png")
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
@@ -530,34 +530,124 @@ def killAllEnemies(enemyList, exploList, soundObjectExplosion):
         enemyList[count].Hit(enemyList, count, 50)
         count = count - 1
 
-
 #Game Over Function
 def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     redColor = pygame.Color(255,0,0)
     blueColor = pygame.Color(0,0,255)
+    greenColor = pygame.Color(0,255,0)
 
-    headSurfaceObj = pygame.image.load('dead.png')
+    headSurfaceObj = pygame.image.load('spritel1.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-
-    menubkg = pygame.image.load(os.path.join(os.path.curdir, "braveheart.jpg")).convert_alpha()
-
-    menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
 
     fontObj = pygame.font.Font('freesansbold.ttf', 110)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
 
     menuTitle = fontObj.render("Game Over", False,redColor)
-    textObj = fontObj1.render("Congratulations, your high score was "+str(points), False,blueColor)
+    textObj = fontObj1.render("Congratulations, your Score was "+str(points), False,blueColor)
+    textObj1 = fontObj1.render("A new High Score!!!", False,redColor)
+    textObj2 = fontObj1.render("Type your initials and hit return", False,blueColor)
 
     selection = 1
     retry = False
     notSelected = True
 
     pygame.key.set_repeat(1,99999)
+    f = open('highscores.txt', 'r')
+    match = False
+    i = 0
+    index = 11
+    scoreList = []
+    for line in f:
+        i = i + 1
+        if points >= int(line[3:]) and match == False:
+            match = True
+            index = i
+            name = "   "
+            scoreList.append("   "+str(points))
+            scoreList.append(line[:len(line)-1])
+        else:
+            scoreList.append(line[:len(line)-1])
+        line[len(line)-1:]
+    f.close
+    if match:
+        scoreList.pop(10)
+
     while(notSelected):
-        windowSurfaceObj.blit(menubkg,(0,0))
+        windowSurfaceObj.blit(desertBackground,(0,0))
+        char = 1
+        while(match):
+            windowSurfaceObj.blit(desertBackground,(0,0))
+
+            windowSurfaceObj.blit(textObj,((1280-textObj.get_rect().width)/2,25))
+            windowSurfaceObj.blit(textObj1,((1280-textObj1.get_rect().width)/2,75))
+            windowSurfaceObj.blit(textObj2,((1280-textObj2.get_rect().width)/2,125))
+            textObj3 = fontObj2.render("_",False,redColor)
+            tempObj = fontObj2.render(scoreList[index-1][:char-1],False,redColor)
+            windowSurfaceObj.blit(textObj3,(550+tempObj.get_rect().width,130+(40*(index))))
+
+
+            for i in range(0, 10):
+                if i+1 == index:
+                    color = redColor
+                else:
+                    color = greenColor
+                textObj3 = fontObj2.render(scoreList[i][:3]+"     "+scoreList[i][3:],False,color)
+                windowSurfaceObj.blit(textObj3,(550,130+(40*(i+1))))
+
+
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == KEYDOWN:
+                    #Arrow Keys
+                    if event.key == K_LEFT:
+                        soundObjBounce.play()
+                        char = (char - 1)
+                        if char < 1:
+                            char = 1
+                    elif event.key == K_RIGHT:
+                        soundObjBounce.play()
+                        char = (char + 1)
+                        if char > 3:
+                            char = 3
+                    elif event.key == K_BACKSPACE:
+                        if char == 1:
+                            scoreList[index-1] = " " + scoreList[index-1][1:]
+                        if char == 2:
+                            scoreList[index-1] = scoreList[index-1][:1] + " " + scoreList[index-1][2:]
+                        if char == 3:
+                            scoreList[index-1] = scoreList[index-1][:2] + " " + scoreList[index-1][3:]
+                        char = char -1
+                        if char < 1:
+                            char = 1
+                    #Enter Key
+                    elif event.key == K_RETURN:
+                        match = False
+                        f = open('highscores.txt', 'w')
+                        i = 0
+                        for line in scoreList:
+                            f.writelines(line)
+                            f.write("\n")
+                        f.close
+                    elif event.key <= 127:
+                        if char == 1:
+                            scoreList[index-1] = chr(event.key) + scoreList[index-1][1:]
+                        if char == 2:
+                            scoreList[index-1] = scoreList[index-1][:1] + chr(event.key) + scoreList[index-1][2:]
+                        if char == 3:
+                            scoreList[index-1] = scoreList[index-1][:2] + chr(event.key) + scoreList[index-1][3:]
+                        char = (char + 1)
+                        if char > 3:
+                            char = 3
+            pygame.display.update()
+            fpsClock.tick(30)
+
+        for i in range(0, 10):
+            textObj3 = fontObj2.render(scoreList[i][:3]+"     "+scoreList[i][3:],False,greenColor)
+            windowSurfaceObj.blit(textObj3,(550,170+(40*(i+1))))
 
         if selection == 0:
             selectObj1 = fontObj2.render("Retry", False,redColor)
@@ -569,7 +659,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
             windowSurfaceObj.blit(headSurfaceObj, (915, 670-headSurfaceObj.get_rect().height/4))
 
         windowSurfaceObj.blit(menuTitle,((1280-menuTitle.get_rect().width)/2,50))
-        windowSurfaceObj.blit(textObj,((1280-textObj.get_rect().width)/2,250))
+        windowSurfaceObj.blit(textObj,((1280-textObj.get_rect().width)/2,150))
         windowSurfaceObj.blit(selectObj1, ((1280-selectObj1.get_rect().width)/5*1,670))
         windowSurfaceObj.blit(selectObj2, ((1280-selectObj2.get_rect().width)/5*4,670))
 
@@ -624,7 +714,6 @@ def enemyGenerator(enemyList, maxEnemies,points):
             #enemyList.append(Enemyflying(right, speed))
         else:
             enemyList.append(Enemy(right, speed))
-
 #Menu function
 def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     redColor = pygame.Color(255,0,0)
@@ -656,37 +745,48 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 110)
-    fontObjT = pygame.font.Font('freesansbold.ttf', 22)
+    fontObjT = pygame.font.Font('freesansbold.ttf', 18)
 
     selection = 1
     menuType = 0
 
     while menu:
-        windowSurfaceObj.blit(menubkg,(0,0))
+        windowSurfaceObj.blit(desertBackground,(0,0))
 
         #Top Menu
         if menuType == 0:
-            menuTitle1 = fontObj1.render("William Wallace Castle Defender", False,
+            menuTitle1 = fontObj1.render("William Wallace Defender", False,
 greenColor)
             menuTitle2 = fontObj2.render("X-TREME 2140", False, redColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("How to Play", False, blueColor)
                 menuObjThree = fontObj.render("Story", False, blueColor)
+                menuObjFour = fontObj.render("High Scores", False, blueColor)
                 windowSurfaceObj.blit(headSurfaceObj, (450,
 250-headSurfaceObj.get_rect().height/4))
             elif selection == 1:
                 menuObjOne = fontObj.render("Play Game", False, blueColor)
                 menuObjTwo = fontObj.render("How to Play", False, redColor)
                 menuObjThree = fontObj.render("Story", False, blueColor)
+                menuObjFour = fontObj.render("High Scores", False, blueColor)
                 windowSurfaceObj.blit(headSurfaceObj, (450,
 350-headSurfaceObj.get_rect().height/4))
-            else:
+            elif selection == 2:
                 menuObjOne = fontObj.render("Play Game", False, blueColor)
                 menuObjTwo = fontObj.render("How to Play", False, blueColor)
                 menuObjThree = fontObj.render("Story", False, redColor)
+                menuObjFour = fontObj.render("High Scores", False, blueColor)
                 windowSurfaceObj.blit(headSurfaceObj, (450,
 450-headSurfaceObj.get_rect().height/4))
+            else:
+                menuObjOne = fontObj.render("Play Game", False, blueColor)
+                menuObjTwo = fontObj.render("How to Play", False, blueColor)
+                menuObjThree = fontObj.render("Story", False, blueColor)
+                menuObjFour = fontObj.render("High Scores", False, redColor)
+                windowSurfaceObj.blit(headSurfaceObj, (450,
+550-headSurfaceObj.get_rect().height/4))
+
 
             windowSurfaceObj.blit(menuTitle1,
 ((1280-menuTitle1.get_rect().width)/2,50))
@@ -698,6 +798,8 @@ greenColor)
 ((1280-menuObjTwo.get_rect().width)/2,350))
             windowSurfaceObj.blit(menuObjThree,
 ((1280-menuObjThree.get_rect().width)/2,450))
+            windowSurfaceObj.blit(menuObjFour,
+((1280-menuObjFour.get_rect().width)/2,550))
         #How to play menu
         elif menuType == 1:
             menuTitle = fontObj1.render("How to Play", False, blueColor)
@@ -777,6 +879,33 @@ greenColor)
 ((1280-menuObjOne.get_rect().width)/5*1,670))
             windowSurfaceObj.blit(menuObjTwo,
 ((1280-menuObjTwo.get_rect().width)/5*4,670))
+#HighScores
+        elif menuType == 3:
+            f = open('highscores.txt', 'r')
+            scoreList = []
+            for line in f:
+                scoreList.append(line[:len(line)-1])
+            for i in range(0, 10):
+                textObj3 = fontObj1.render(scoreList[i][:3]+"     "+scoreList[i][3:],False,greenColor)
+                windowSurfaceObj.blit(textObj3,(550,130+(40*(i+1))))
+            menuTitle = fontObj1.render("High Scores", False, blueColor)
+            if selection == 0:
+                menuObjOne = fontObj.render("Play Game", False, redColor)
+                menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
+                windowSurfaceObj.blit(headSurfaceObj, (150,
+670-headSurfaceObj.get_rect().height/4))
+            else:
+                menuObjOne = fontObj.render("Play Game", False, blueColor)
+                menuObjTwo = fontObj.render("Back to Main Menu", False, redColor)
+                windowSurfaceObj.blit(headSurfaceObj, (715,
+670-headSurfaceObj.get_rect().height/4))
+
+            windowSurfaceObj.blit(menuTitle,
+((1280-menuTitle.get_rect().width)/2,100))
+            windowSurfaceObj.blit(menuObjOne,
+((1280-menuObjOne.get_rect().width)/5*1,670))
+            windowSurfaceObj.blit(menuObjTwo,
+((1280-menuObjTwo.get_rect().width)/5*4,670))
 
 
         for event in pygame.event.get():
@@ -788,13 +917,13 @@ greenColor)
                 if event.key == K_UP or event.key == K_LEFT:
                     soundObjBounce.play()
                     if menuType == 0:
-                        selection = (selection - 1) % 3
+                        selection = (selection - 1) % 4
                     else:
                         selection = (selection - 1) % 2
                 if event.key == K_DOWN or event.key == K_RIGHT:
                     soundObjBounce.play()
                     if menuType == 0:
-                        selection = (selection + 1) % 3
+                        selection = (selection + 1) % 4
                     else:
                         selection = (selection + 1) % 2
                 #Enter Key
@@ -813,6 +942,11 @@ greenColor)
                         if selection == 1:
                             soundObjectSelect.play()
                             menuType = 0
+                    elif menuType == 3:
+                        if selection == 1:
+                            soundObjectSelect.play()
+                            menuType = 0
+
 
         pygame.display.update()
         fpsClock.tick(30)
@@ -821,3 +955,4 @@ greenColor)
 
 if __name__ == '__main__':
     main()
+
