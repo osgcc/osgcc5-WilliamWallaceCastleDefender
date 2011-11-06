@@ -24,6 +24,7 @@ def main():
     maxEnemies = 10
     enemyList = []
 
+
     #Enemy variables
     maxEnemies = 25
     enemyList = []
@@ -118,11 +119,30 @@ def main():
         if not skipFall:
             player.fall()
 
-        for i in range(len(ArrowList)):
+        arrowGroup = pygame.sprite.Group()
+        end = len(ArrowList)
+        i = end - 1
+
+        while i >= 0:
             chk = ArrowList[i].updateArrowPos()
-            if chk:
-                ArrowObj = ArrowList[i].ArrowObj
-                windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
+            if not chk:
+                ArrowList.pop(i)
+                i = i - 1
+            else:
+                end = len(enemyList) - 1
+                count = end
+                chk = True
+                while count >= 0:
+                    if ArrowList[i].rect.colliderect(enemyList[count].rect):
+                        ArrowList.pop(i)
+                        i = i - 1
+                        enemyList[count].Hit(enemyList,count,5)
+                        chk = False
+                    count -= 1
+                if chk:
+                    ArrowObj = ArrowList[i].ArrowObj
+                    windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
+                i = i - 1
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()

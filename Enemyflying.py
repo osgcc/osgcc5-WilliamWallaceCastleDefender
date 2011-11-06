@@ -43,7 +43,7 @@ class Enemyflying(pygame.sprite.Sprite):
         self.HP = slef.HP - 5
         if self.HP < 1:
             enemyList.pop(index)
-    def arrowHit(self, enemyList, index):
-        self.HP = slef.HP - 2.5
+    def Hit(self, enemyList, index, dmg):
+        self.HP = self.HP - dmg
         if self.HP < 1:
             enemyList.pop(index)
