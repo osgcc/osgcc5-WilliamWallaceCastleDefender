@@ -98,14 +98,15 @@ def main():
                         arrow = Arrow(player.x,player.y+24,mousex,mousey,player.gunmode)
                         ArrowList.append(arrow)
                         if player.MultiShot2:
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey+20,player.gunmode)
-                            ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey-20,player.gunmode)
-                            ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey+40,player.gunmode)
-                            ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey-40,player.gunmode)
-                            ArrowList.append(arrow)
+                            if player.vector.y == 1 and player.vector.x == 0:
+                                arrow = Arrow(player.x,player.y+24,mousex,mousey+20,player.gunmode)
+                                ArrowList.append(arrow)
+                                arrow = Arrow(player.x,player.y+24,mousex,mousey-20,player.gunmode)
+                                ArrowList.append(arrow)
+                                arrow = Arrow(player.x,player.y+24,mousex,mousey+40,player.gunmode)
+                                ArrowList.append(arrow)
+                                arrow = Arrow(player.x,player.y+24,mousex,mousey-40,player.gunmode)
+                                ArrowList.append(arrow)
                         elif player.MultiShot:
                             arrow = Arrow(player.x,player.y+24,mousex,mousey+30,player.gunmode)
                             ArrowList.append(arrow)
