@@ -82,7 +82,7 @@ def main():
             windowSurfaceObj.blit(player.images[player.image],player.rect)
             pygame.display.flip()
             fpsClock.tick(30)
-            
+
         else:
             if(player.Lives <= 0):
                 retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
@@ -191,8 +191,9 @@ def main():
                     if event.key == K_SPACE:
                         if player.Repel > 0:
                             player.Repel -= 1
-                        rep = pygame.image.load("pexpl1.png")
-                        windowSurfaceObj.blit(rep,rep.get_rect())
+
+                        #rep = pygame.image.load("pexpl1.png")
+                        #windowSurfaceObj.blit(rep,rep.get_rect())
                         for i in range(0,len(missileList)):
                             missXp = missileList[i].x
                             missYp = missileList[i].y
