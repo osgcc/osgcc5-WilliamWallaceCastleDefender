@@ -25,7 +25,7 @@ class Shield(pygame.sprite.Sprite):
         print self.y
         self.x += x
         self.y += y
-        self.framenumber+=0.33
+        self.framenumber+=0.5
         self.image = (int(self.framenumber)) % 4
         if(self.framenumber > 2):
             return True;

@@ -609,7 +609,8 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-
+    menubg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
+    
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 110)
@@ -619,7 +620,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     menuType = 0
 
     while menu:
-        windowSurfaceObj.blit(desertBackground,(0,0))
+        windowSurfaceObj.blit(menubg,(0,0))
 
         #Top Menu
         if menuType == 0:
@@ -685,7 +686,7 @@ greenColor)
         #Story Menu
         elif menuType == 2:
             menuTitle = fontObj1.render("Story", False, blueColor)
-            textLine1 = fontObjT.render("Text goes here", False, blueColor)
+            textLine1 = fontObjT.render("It was 2139 when the meteors fell.  \nWilliam Wallace stood over his once great kingdom\nand marveled at what had happened\nIn 2140, the machines invaded.", False, blueColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
