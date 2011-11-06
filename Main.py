@@ -5,6 +5,7 @@ from Player import *
 from Vector import *
 from Enemy import *
 from Enemyflying import *
+from Arrow import *
 
 
 def main():
@@ -17,6 +18,11 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     pygame.key.set_repeat(1,50)
+    ArrowList = []
+
+    #Enemy variables
+    maxEnemies = 10
+    enemyList = []
 
     #Enemy variables
     maxEnemies = 25
@@ -49,7 +55,9 @@ def main():
                 player.updateVector(mousex,mousey)
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
-                    blah = "blah"
+                    mousex, mousey = event.pos
+                    arrow = Arrow(player.x,player.y,mousex,mousey)
+                    ArrowList.append(arrow)
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -96,6 +104,13 @@ def main():
         #player.updatePos()
         if not skipFall:
             player.fall()
+
+        for i in range(len(ArrowList)):
+            chk = ArrowList[i].updateArrowPos()
+            if chk:
+                ArrowObj = ArrowList[i].ArrowObj
+                windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
+
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #Castle health bar
         pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
