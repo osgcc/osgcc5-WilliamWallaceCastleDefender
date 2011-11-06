@@ -18,7 +18,7 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
-    
+
     #EXPLOSION
     exploList = []
 
@@ -33,9 +33,11 @@ def main():
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     pygame.key.set_repeat(1,50)
     playing = True
-=======
     gravityLimit = False
->>>>>>> origin/master
+
+    soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
+    pygame.mixer.music.load("BackgroundMusic.mp3")
+    pygame.mixer.music.play(-1)
     #Main Loop
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -57,9 +59,8 @@ def main():
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
-=======
                 exploList.append(Explo(enx, eny))
->>>>>>> origin/master
+                soundObjectExplosion.play()
             count = count - 1
 
         #DRAW EXLPLOSIONS
@@ -69,8 +70,8 @@ def main():
             if(exploList[count].updateEnemyPos()):
                 exploList.pop(count)
             count = count - 1
-                
-            
+
+
         skipFall = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -88,14 +89,10 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
-                    arrow = Arrow(player.x,player.y,mousex,mousey)
-                    ArrowList.append(arrow)
-=======
                     if player.Arrows - 1 >= 0:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
                         player.Arrows -= 1
->>>>>>> origin/master
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -184,11 +181,8 @@ def main():
                 chk = True
                 while count >= 0:
                     if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
-<<<<<<< HEAD
                         print "You broke it"
-=======
                         print "no"
->>>>>>> origin/master
                         print i
                         print len(ArrowList)-1
                         print count
@@ -200,6 +194,7 @@ def main():
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
+                            soundObjectExplosion.play()
                         points = points + 5
                         chk = False
                     count -= 1
@@ -212,6 +207,17 @@ def main():
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
+        if player.Arrows + 1 <= 20:
+            player.ArrowsRepl += .05
+            if player.ArrowsRepl >= 1.0:
+                player.Arrows += 1
+                player.ArrowsRepl = 0.0
+        if player.Gravity + 1 <= 100:
+            player.GravityRepl += .25
+            if player.GravityRepl >= 1.0:
+                player.Gravity += 1
+                player.GravityRepl = 0.0
+        #print player.Gravity
     if retry:
         pygame.mixer.music.stop
         main()
@@ -280,23 +286,6 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
         pygame.display.update()
         fpsClock.tick(30)
     return retry
-
-=======
-        if player.Arrows + 1 <= 20:
-            player.ArrowsRepl += .05
-            if player.ArrowsRepl >= 1.0:
-                player.Arrows += 1
-                player.ArrowsRepl = 0.0
-        if player.Gravity + 1 <= 100:
-            player.GravityRepl += .25
-            if player.GravityRepl >= 1.0:
-                player.Gravity += 1
-                player.GravityRepl = 0.0
-<<<<<<< HEAD
-=======
-        #print player.Gravity
->>>>>>> origin/master
->>>>>>> origin/master
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
