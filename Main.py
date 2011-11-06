@@ -33,11 +33,17 @@ def main():
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     pygame.key.set_repeat(1,50)
     playing = True
+<<<<<<< HEAD
     gravityLimit = False
 
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
     pygame.mixer.music.play(-1)
+=======
+
+    gravityLimit = False
+
+>>>>>>> origin/master
     #Main Loop
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -59,8 +65,13 @@ def main():
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
+<<<<<<< HEAD
                 exploList.append(Explo(enx, eny))
                 soundObjectExplosion.play()
+=======
+
+                exploList.append(Explo(enx, eny))
+>>>>>>> origin/master
             count = count - 1
 
         #DRAW EXLPLOSIONS
@@ -93,6 +104,10 @@ def main():
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
                         player.Arrows -= 1
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -115,10 +130,10 @@ def main():
                     x = -10
                 #player.updatePlayerPos(x,0)
                 if y != 0:
-                    if player.Gravity - 2 >= 0 and gravityLimit:
+                    if player.Gravity - 1 >= 0 and gravityLimit:
                         player.jet()
                         skipFall = True
-                        player.Gravity -= 2
+                        player.Gravity -= 1
                     else:
                         if player.Gravity >= 20:
                             gravityLimit = True
@@ -142,7 +157,7 @@ def main():
             if player.Gravity - 1 >= 0 and gravityLimit:
                 player.jet()
                 skipFall = True
-                player.Gravity -= 2
+                player.Gravity -= 1
             else:
                 if player.Gravity >= 20:
                     gravityLimit = True
@@ -169,7 +184,6 @@ def main():
         arrowGroup = pygame.sprite.Group()
         end = len(ArrowList)
         i = end - 1
-
         while i >= 0:
             chk = ArrowList[i].updateArrowPos()
             if not chk:
@@ -180,6 +194,7 @@ def main():
                 count = end
                 chk = True
                 while count >= 0:
+<<<<<<< HEAD
                     if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
                         print "You broke it"
                         print "no"
@@ -187,6 +202,10 @@ def main():
                         print len(ArrowList)-1
                         print count
                         print len(enemyList)-1
+=======
+                    tmp = ArrowList[i]
+                    tmp = enemyList[count]
+>>>>>>> origin/master
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
                         ArrowList.pop(i)
                         i = i - 1
@@ -198,6 +217,8 @@ def main():
                         points = points + 5
                         chk = False
                     count -= 1
+                    if i < 0:
+                        count = -1
                 if chk:
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
@@ -217,7 +238,10 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
+<<<<<<< HEAD
         #print player.Gravity
+=======
+>>>>>>> origin/master
     if retry:
         pygame.mixer.music.stop
         main()
@@ -287,6 +311,13 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
         fpsClock.tick(30)
     return retry
 
+<<<<<<< HEAD
+=======
+
+
+        #print player.Gravity
+
+>>>>>>> origin/master
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
