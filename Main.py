@@ -51,8 +51,7 @@ def main():
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
     soundObjectArrow = pygame.mixer.Sound("arrow.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
- #   pygame.mixer.music.play(-1)
-    #pygame.mixer.music.play(-1)
+    pygame.mixer.music.play(-1)
 
     gravityLimit = False
     #Main Loop
@@ -534,7 +533,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-    menubkg = pygame.image.load(os.path.join(os.path.curdir, braveheart.jpg)).convert_alpha()
+    menubkg = pygame.image.load(os.path.join(os.path.curdir, "braveheart.jpg")).convert_alpha()
     fontObj = pygame.font.Font('freesansbold.ttf', 110)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
@@ -630,7 +629,6 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-<<<<<<< HEAD
     menubg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
     shift = pygame.image.load(os.path.join(os.path.curdir, 'shift.png')).convert_alpha()
     arrowkeys = pygame.image.load(os.path.join(os.path.curdir, 'arrowkeys.png')).convert_alpha()
@@ -643,9 +641,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     shift = pygame.transform.scale(shift,(tmp.width/6,tmp.height/6))
     tmp = space.get_rect()
     space = pygame.transform.scale(space,(tmp.width/7,tmp.height/7))
-=======
     menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
->>>>>>> origin/master
 
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
@@ -697,8 +693,8 @@ greenColor)
             menuTitle = fontObj1.render("How to Play", False, blueColor)
             textLine1 = fontObjT.render("Use for Movement", False, blueColor)
             textLine2 = fontObjT.render("Press Up to Use Anti-Gravity Boots", False, blueColor)
-            textLine3 = fontObjT.render("Press For Decoy (3 to use)", False, blueColor)
-            textLine4 = fontObjT.render("Press to Repel Enemy Fire (3 to use)", False, blueColor)
+            textLine3 = fontObjT.render("Press For Decoy", False, blueColor)
+            textLine4 = fontObjT.render("Press to Repel Enemy Fire", False, blueColor)
             textLine5 = fontObjT.render("Defend the castle, you will find powerups on the way", False, blueColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
@@ -737,14 +733,11 @@ greenColor)
         #Story Menu
         elif menuType == 2:
             menuTitle = fontObj1.render("Story", False, blueColor)
-<<<<<<< HEAD
             textLine1 = fontObjT.render("It was 2139 when the meteors fell. ",False, greenColor)
             textLine2 = fontObjT.render("Sir William Wallace stood over his once great kingdom",False, greenColor)
             textLine3 = fontObjT.render("and marveled at what had happened", False, greenColor)
             textLine4 = fontObjT.render("In 2140, the machines invaded...", False, greenColor)
-=======
             textLine1 = fontObjT.render("Text goes here", False, blueColor)
->>>>>>> origin/master
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
