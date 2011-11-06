@@ -133,18 +133,18 @@ def main():
             elif event.type == KEYDOWN:
                 x = 0
                 y = 0
-                if event.key == K_LEFT:
+                if event.key == K_LEFT or event.key == K_a:
                     x = -10
-                if event.key == K_RIGHT:
+                if event.key == K_RIGHT or event.key == K_d:
                     x = 10
-                if event.key == K_UP:
+                if event.key == K_UP or event.key == K_w:
                     y = -.5
                 keystate =  pygame.key.get_pressed()
-                if keystate[pygame.locals.K_UP]:
+                if keystate[pygame.locals.K_UP] or keystate[pygame.locals.K_w]:
                     y = -10
-                if keystate[pygame.locals.K_RIGHT]:
+                if keystate[pygame.locals.K_RIGHT] or keystate[pygame.locals.K_d]:
                     x = 10
-                if keystate[pygame.locals.K_LEFT]:
+                if keystate[pygame.locals.K_LEFT] or keystate[pygame.locals.K_a]:
                     x = -10
                 #player.updatePlayerPos(x,0)
                 if y != 0:
@@ -163,11 +163,11 @@ def main():
         x = 0
         y = 0
         keystate =  pygame.key.get_pressed()
-        if keystate[pygame.locals.K_UP]:
+        if keystate[pygame.locals.K_UP] or keystate[pygame.locals.K_w]:
             y = -10
-        if keystate[pygame.locals.K_RIGHT]:
+        if keystate[pygame.locals.K_RIGHT] or keystate[pygame.locals.K_d]:
             x = 10
-        if keystate[pygame.locals.K_LEFT]:
+        if keystate[pygame.locals.K_LEFT] or keystate[pygame.locals.K_a]:
             x = -10
         if(x != 0 or y != 0):
             player.updatePlayerPos(x,0)

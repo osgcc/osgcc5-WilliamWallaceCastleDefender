@@ -25,11 +25,11 @@ class Enemyflying(pygame.sprite.Sprite):
         self.rect = self.images[self.image].get_rect()
         if right == True:
             self.x = 1280
-            self.y = random.randint(250, 550)
+            self.y = random.randint(80, 550)
             self.speed = -speed
         else:
             self.x = 0
-            self.y = random.randint(250, 550)
+            self.y = random.randint(80, 550)
             self.speed = speed
         self.rect = self.rect.move(self.x, self.y)
 
@@ -38,7 +38,7 @@ class Enemyflying(pygame.sprite.Sprite):
         if(self.framenumber > framestart + totalframes or self.framenumber < framestart):
             self.framenumber = framestart
         self.image = (int(self.framenumber)) % totalframes + framestart
-        
+
     def updateEnemyPos(self, enemyList, index):
         #self.image = (self.image + 1) % 8
         if(self.right):
