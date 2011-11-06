@@ -49,12 +49,13 @@ class Player(pygame.sprite.Sprite):
         self.Arrows = 20
         self.ArrowsMax = 20
         self.ArrowsRepl = 0.0
-        self.ArrowsReplRate = 0.025
+        self.ArrowsReplRate = 0.05
         self.Gravity = 100
         self.GravityRepl = 0.0
         self.RapidFire = False
         self.MultiShot = False
         self.MultiShot2 = False
+        self.Lives = 3
 
     def updateVector(self,x,y):
 

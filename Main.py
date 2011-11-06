@@ -23,7 +23,7 @@ def main():
     exploList = []
 
     #Enemy variables
-    maxEnemies = 25
+    maxEnemies = 50
     enemyList = []
 
     #Castle HP
@@ -200,15 +200,6 @@ def main():
                 count = end
                 chk = True
                 while count >= 0:
-                    if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
-                        print "You broke it"
-                        print "no"
-                        print i
-                        print len(ArrowList)-1
-                        print count
-                        print len(enemyList)-1
-                    tmp = ArrowList[i]
-                    tmp = enemyList[count]
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
                         ArrowList.pop(i)
                         i = i - 1
@@ -242,7 +233,7 @@ def main():
                         player.MultiShot2 = True
                     player.MultiShot = True
                 elif PowerUpList[i].type == 2:
-                    player.ArrowReplRate += .1
+                    player.ArrowsReplRate += .1
                 elif PowerUpList[i].type == 3:
                     if HP + 10 >= 100:
                         HP = 100
@@ -252,7 +243,23 @@ def main():
             else:
                 windowSurfaceObj.blit(PowerUpList[i].images[PowerUpList[i].image], PowerUpList[i].rect)
             i = i - 1
-
+        #check enemy detection with player
+        i = len(enemyList) - 1
+        while i >= 0:
+            if player.rect.colliderect(enemyList[i].rect):
+                player.Lives -= 1
+                exploList.append(Explo(enemyList[i].x, enemyList[i].y))
+                enemyList.pop(i)
+                if player.Lives <= 0:
+                    gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                else:
+                    player.ArrowsMax = 20
+                    player.ArrowsReplRate = 0.05
+                    player.RapidFire = False
+                    player.MultiShot = False
+                    player.MultiShot2 = False
+                i = len(enemyList)
+            i = i - 1
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
@@ -268,7 +275,7 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
-        #print player.Gravity
+
     if retry:
         pygame.mixer.music.stop
         main()
