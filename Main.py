@@ -9,7 +9,7 @@ from Arrow import *
 from Explo import *
 from PowerUp import *
 def main():
-    menu = False
+    menu = True
     pygame.init()
     fpsClock = pygame.time.Clock()
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
@@ -33,9 +33,14 @@ def main():
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     pygame.key.set_repeat(1,50)
     playing = True
-
     gravityLimit = False
 
+    soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
+    soundObjectArrow = pygame.mixer.Sound("arrow.wav")
+    pygame.mixer.music.load("BackgroundMusic.mp3")
+    pygame.mixer.music.play(-1)
+
+    gravityLimit = False
     #Main Loop
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -54,6 +59,8 @@ def main():
                 HP = HP -5
                 if HP < 0:
                     HP = 0
+                exploList.append(Explo(enx, eny))
+                soundObjectExplosion.play()
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
@@ -90,10 +97,14 @@ def main():
                     if player.Arrows - 1 >= 0:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
+<<<<<<< HEAD
                         arrow = Arrow(player.x,player.y+24,mousex,mousey+30)
                         ArrowList.append(arrow)
                         arrow = Arrow(player.x,player.y+24,mousex,mousey-30)
                         ArrowList.append(arrow)
+=======
+                        soundObjectArrow.play()
+>>>>>>> origin/master
                         player.Arrows -= 1
 
                     #left, middle, right button
@@ -182,6 +193,13 @@ def main():
                 count = end
                 chk = True
                 while count >= 0:
+                    if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
+                        print "You broke it"
+                        print "no"
+                        print i
+                        print len(ArrowList)-1
+                        print count
+                        print len(enemyList)-1
                     tmp = ArrowList[i]
                     tmp = enemyList[count]
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
@@ -191,8 +209,12 @@ def main():
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
+<<<<<<< HEAD
                             tmp = PowerUp(enx,eny)
                             PowerUpList.append(tmp)
+=======
+                            soundObjectExplosion.play()
+>>>>>>> origin/master
                         points = points + 5
                         chk = False
                     count -= 1
@@ -236,6 +258,7 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
+        #print player.Gravity
     if retry:
         pygame.mixer.music.stop
         main()
@@ -304,10 +327,6 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
         pygame.display.update()
         fpsClock.tick(30)
     return retry
-
-
-
-        #print player.Gravity
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
