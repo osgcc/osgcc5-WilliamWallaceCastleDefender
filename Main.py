@@ -18,11 +18,8 @@ def main():
     deathcounter = 0
     textcounter = 0
     fpsClock = pygame.time.Clock()
-<<<<<<< HEAD
     soundObjectExplosion = pygame.mixer.Sound('explosion.wav')
-=======
     message = ""
->>>>>>> origin/master
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallace Castle Defender X-Treme 2140")
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
@@ -195,7 +192,7 @@ def main():
                     y = 0
                     if event.key == K_SPACE:
                         if player.Repel > 0:
-                            
+
                             player.Repel -= 1
                         ShieldList.append(Shield(player.x, player.y))
                         #rep = pygame.image.load("pexpl1.png")
@@ -272,8 +269,8 @@ def main():
                         gravityLimit = True
                     else:
                         gravityLimit = False
-            
-            
+
+
             #player.updateVector(mousex,mousey)
             #Castle health bar
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
@@ -469,7 +466,7 @@ def main():
                     i = len(enemyList)
                 i = i - 1
 
-            
+
             windowSurfaceObj.blit(player.images[player.image],player.rect)
             #DRAW SHIELD
             count = len(ShieldList) - 1
@@ -477,7 +474,7 @@ def main():
                 windowSurfaceObj.blit(ShieldList[count].images[ShieldList[count].image], ShieldList[count].rect)
                 ShieldList[count].x = player.x
                 ShieldList[count].y = player.y
-                
+
                 if(ShieldList[count].move(0,0)):
                     ShieldList.pop(count)
                 count = count - 1
@@ -553,7 +550,8 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
             scoreList.append(line[:len(line)-1])
         line[len(line)-1:]
     f.close
-    scoreList.pop(10)
+    if match:
+        scoreList.pop(10)
 
     while(notSelected):
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -707,7 +705,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
     menubg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
-    
+
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 110)
@@ -796,7 +794,7 @@ greenColor)
         #Story Menu
         elif menuType == 2:
             menuTitle = fontObj1.render("Story", False, blueColor)
-            textLine1 = fontObjT.render("It was 2139 when the meteors fell.  \nWilliam Wallace stood over his once great kingdom\nand marveled at what had happened\nIn 2140, the machines invaded.", False, blueColor)
+            textLine1 = fontObjT.render("It was 2139 when the meteors fell.  "+"\n" +"William Wallace stood over his once great kingdom\nand marveled at what had happened\nIn 2140, the machines invaded.", False, blueColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
