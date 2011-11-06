@@ -19,14 +19,14 @@ def main():
     player = Player()
     pygame.key.set_repeat(1,50)
     ArrowList = []
-    
+
     #EXPLOSION
     exploList = []
 
     #Enemy variables
     maxEnemies = 25
     enemyList = []
-    
+
     #Castle HP
     HP = 100
     points = 0
@@ -61,8 +61,8 @@ def main():
             if(exploList[count].updateEnemyPos()):
                 exploList.pop(count)
             count = count - 1
-                
-            
+
+
         skipFall = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -167,11 +167,8 @@ def main():
                 chk = True
                 while count >= 0:
                     if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
-<<<<<<< HEAD
                         print "You broke it"
-=======
                         print "no"
->>>>>>> origin/master
                         print i
                         print len(ArrowList)-1
                         print count
@@ -205,10 +202,7 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
-<<<<<<< HEAD
-=======
-        #print player.Gravity
->>>>>>> origin/master
+
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
