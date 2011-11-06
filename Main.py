@@ -48,6 +48,7 @@ def main():
 
     gravityLimit = False
     #Main Loop
+    LifeUp = 1
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
         windowSurfaceObj.blit(level,(0,0))
@@ -71,13 +72,13 @@ def main():
                 HP = HP -5
                 if HP < 0:
                     HP = 0
-                exploList.append(Explo(enx, eny))
+                exploList.append(Explo(enx, eny, False))
                 soundObjectExplosion.play()
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
 
-                exploList.append(Explo(enx, eny))
+                exploList.append(Explo(enx, eny, False))
             count = count - 1
 
         #DRAW EXLPLOSIONS
@@ -110,15 +111,14 @@ def main():
                         arrow = Arrow(player.x,player.y+24,mousex,mousey,player.gunmode)
                         ArrowList.append(arrow)
                         if player.MultiShot2:
-                            if player.vector.y == 1 and player.vector.x == 0:
-                                arrow = Arrow(player.x,player.y+24,mousex,mousey+20,player.gunmode)
-                                ArrowList.append(arrow)
-                                arrow = Arrow(player.x,player.y+24,mousex,mousey-20,player.gunmode)
-                                ArrowList.append(arrow)
-                                arrow = Arrow(player.x,player.y+24,mousex,mousey+40,player.gunmode)
-                                ArrowList.append(arrow)
-                                arrow = Arrow(player.x,player.y+24,mousex,mousey-40,player.gunmode)
-                                ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+20,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-20,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+40,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-40,player.gunmode)
+                            ArrowList.append(arrow)
                         elif player.MultiShot:
                             arrow = Arrow(player.x,player.y+24,mousex,mousey+30,player.gunmode)
                             ArrowList.append(arrow)
@@ -225,14 +225,17 @@ def main():
                         enx = enemyList[count].x
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
-                            exploList.append(Explo(enx, eny))
+                            exploList.append(Explo(enx, eny, False))
                             x = random.randint(0,100)
-                            print x
+                            #print x
                             if x <= 90:
                                 tmp = PowerUp(enx,eny)
                                 PowerUpList.append(tmp)
                             soundObjectExplosion.play()
                         points = points + 5
+                        if points / LifeUp >= 100:
+                            LifeUp += 1
+                            player.Lives += 1
                         chk = False
                     count -= 1
                     if i < 0:
@@ -245,7 +248,7 @@ def main():
         #Missile Code
         end = len(missileList)
         i = end - 1
-        print str(i)+" "+str(len(missileList))
+        #print str(i)+" "+str(len(missileList))
         while i >= 0:
             chk = missileList[i].updateMissilePos()
             if not chk:
@@ -253,13 +256,24 @@ def main():
                 i = i - 1
             else:
                 if missileList[i].rect.colliderect(player.rect):
-                    exploList.append(Explo(missileList[i].x, missileList[i].y))
+                    exploList.append(Explo(missileList[i].x, missileList[i].y, True))
                     soundObjectExplosion.play()
                     missileList.pop(i)
                     player.Lives -= 1
                     if player.Lives <= 0:
+<<<<<<< HEAD
                         retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                         playing = False
+=======
+                        gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    else:
+                        player.ArrowsMax = 20
+                        player.ArrowsReplRate = 0.05
+                        player.RapidFire = False
+                        player.MultiShot = False
+                        player.MultiShot2 = False
+                        player.gunmode = False
+>>>>>>> origin/master
                     chk = False
                 if i<0:
                     count = -1
@@ -298,8 +312,12 @@ def main():
         while i >= 0:
             if player.rect.colliderect(enemyList[i].rect):
                 player.Lives -= 1
+<<<<<<< HEAD
                 exploList.append(Explo(enemyList[i].x, enemyList[i].y))
                 soundObjectExplosion.play()
+=======
+                exploList.append(Explo(enemyList[i].x, enemyList[i].y, True))
+>>>>>>> origin/master
                 enemyList.pop(i)
                 if player.Lives <= 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
@@ -310,8 +328,10 @@ def main():
                     player.RapidFire = False
                     player.MultiShot = False
                     player.MultiShot2 = False
+                    player.gunmode = False
                 i = len(enemyList)
             i = i - 1
+
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
