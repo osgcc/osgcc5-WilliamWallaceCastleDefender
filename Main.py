@@ -1,14 +1,15 @@
 #Main
-import pygame, sys
+import pygame, sys, os
 from pygame.locals import *
 from Player import *
+
 
 def main():
     pygame.init()
     fpsClock = pygame.time.Clock()
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallce Defender X-Treme 2140")
-    desertBackground = pygame.image.load('desert-background.jpg').convert()
+    desertBackground = pygame.image.load(os.path,join(os.curdir, 'desert-background.jpg')).convert()
     player = Player()
     #Main Loop
     while True:
