@@ -19,6 +19,7 @@ def main():
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallce Defender X-Treme 2140")
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
+    SurfaceObjLife = pygame.image.load("life.png")
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
@@ -141,18 +142,18 @@ def main():
             elif event.type == KEYDOWN:
                 x = 0
                 y = 0
-                if event.key == K_LEFT:
+                if event.key == K_LEFT or event.key == K_a:
                     x = -10
-                if event.key == K_RIGHT:
+                if event.key == K_RIGHT or event.key == K_d:
                     x = 10
-                if event.key == K_UP:
+                if event.key == K_UP or event.key == K_w:
                     y = -.5
                 keystate =  pygame.key.get_pressed()
-                if keystate[pygame.locals.K_UP]:
+                if keystate[pygame.locals.K_UP] or keystate[pygame.locals.K_w]:
                     y = -10
-                if keystate[pygame.locals.K_RIGHT]:
+                if keystate[pygame.locals.K_RIGHT] or keystate[pygame.locals.K_d]:
                     x = 10
-                if keystate[pygame.locals.K_LEFT]:
+                if keystate[pygame.locals.K_LEFT] or keystate[pygame.locals.K_a]:
                     x = -10
                 #player.updatePlayerPos(x,0)
                 if y != 0:
@@ -171,11 +172,11 @@ def main():
         x = 0
         y = 0
         keystate =  pygame.key.get_pressed()
-        if keystate[pygame.locals.K_UP]:
+        if keystate[pygame.locals.K_UP] or keystate[pygame.locals.K_w]:
             y = -10
-        if keystate[pygame.locals.K_RIGHT]:
+        if keystate[pygame.locals.K_RIGHT] or keystate[pygame.locals.K_d]:
             x = 10
-        if keystate[pygame.locals.K_LEFT]:
+        if keystate[pygame.locals.K_LEFT] or keystate[pygame.locals.K_a]:
             x = -10
         if(x != 0 or y != 0):
             player.updatePlayerPos(x,0)
@@ -200,8 +201,10 @@ def main():
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
         #Display Lives
         fontObj = pygame.font.Font('freesansbold.ttf', 32)
-        pointsSurfaceObj = fontObj.render("Lives: " + str(player.Lives), False, pygame.Color(255,255,255))
-        windowSurfaceObj.blit(pointsSurfaceObj,(300,25))
+        livesSurfaceObj = fontObj.render("Lives:", False, pygame.Color(255,255,255))
+        windowSurfaceObj.blit(livesSurfaceObj,(300,25))
+        for i in range(0, player.Lives):
+            windowSurfaceObj.blit(SurfaceObjLife,(300+livesSurfaceObj.get_rect().width +(i*(SurfaceObjLife.get_rect().width+25)),25-SurfaceObjLife.get_rect().height/4))
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
         gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
@@ -270,8 +273,9 @@ def main():
                     soundObjectExplosion.play()
                     missileList.pop(i)
                     player.Lives -= 1
-                    if player.Lives <= 0:
-                        gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    if player.Lives <= 0 and playing == True:
+                        retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                        playing = False
                     else:
                         player.ArrowsMax = 20
                         player.ArrowsReplRate = 0.05
@@ -327,10 +331,13 @@ def main():
         while i >= 0:
             if player.rect.colliderect(enemyList[i].rect):
                 player.Lives -= 1
+                exploList.append(Explo(enemyList[i].x, enemyList[i].y,True))
+                soundObjectExplosion.play()
                 exploList.append(Explo(enemyList[i].x, enemyList[i].y, True))
                 enemyList.pop(i)
-                if player.Lives <= 0:
-                    gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                if player.Lives <= 0 and playing == True:
+                    retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    playing = False
                 else:
                     player.ArrowsMax = 20
                     player.ArrowsReplRate = 0.05
@@ -424,11 +431,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 
         pygame.display.update()
         fpsClock.tick(30)
-    if retry:
-        main()
-    else:
-        pygame.quit()
-    #return retry
+    return retry
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
