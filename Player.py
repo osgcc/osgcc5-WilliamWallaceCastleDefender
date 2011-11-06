@@ -9,8 +9,16 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(os.curdir, 'wallacetemp.png')).convert()
-        self.rect = self.image.get_rect()
+        self.image = 0
+        self.images = [pygame.image.load(os.path.join(os.curdir, 'spritel1.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel2.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel3.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel4.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel5.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel6.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel7.png')).convert_alpha(),
+                      pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha()]
+        self.rect = self.images[self.image].get_rect()
         self.rect = self.rect.move(300,300)
         self.vel = 10
         self.x = 330
@@ -20,6 +28,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def updateVector(self,x,y):
+        
         diffX = x - self.x
         diffY = y - self.y
         if diffX != 0 and diffY!= 0:
@@ -35,6 +44,7 @@ class Player(pygame.sprite.Sprite):
             self.vector.y = self.vector.y / (sqrt((self.vector.x*self.vector.x)+(self.vector.y*self.vector.y)))
 
     def updatePlayerPos(self,x,y):
+        self.image = (self.image + 1) % 8
         self.x += x
         self.y += y
         self.rect = self.rect.move(x,y)
