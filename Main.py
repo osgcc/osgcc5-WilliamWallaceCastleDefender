@@ -190,6 +190,10 @@ def main():
         fontObj = pygame.font.Font('freesansbold.ttf', 32)
         pointsSurfaceObj = fontObj.render("Points: " + str(points), False, pygame.Color(255,255,255))
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
+        #Display Lives
+        fontObj = pygame.font.Font('freesansbold.ttf', 32)
+        pointsSurfaceObj = fontObj.render("Lives: " + str(player.Lives), False, pygame.Color(255,255,255))
+        windowSurfaceObj.blit(pointsSurfaceObj,(300,25))
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
         gravitySurfaceObj = fontObj.render("Anti-Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
@@ -234,6 +238,7 @@ def main():
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
             i = i - 1
+
         #Missile Code
         end = len(missileList)
         i = end - 1
@@ -248,6 +253,9 @@ def main():
                     exploList.append(Explo(missileList[i].x, missileList[i].y))
                     soundObjectExplosion.play()
                     missileList.pop(i)
+                    player.Lives -= 1
+                    if player.Lives <= 0:
+                        gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     chk = False
                 if i<0:
                     count = -1
@@ -309,7 +317,7 @@ def main():
                 player.Arrows += 1
                 player.ArrowsRepl = 0.0
         if player.Gravity + 1 <= 100:
-            player.GravityRepl += .25
+            player.GravityRepl += .5
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
@@ -381,12 +389,16 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 
         pygame.display.update()
         fpsClock.tick(30)
-    return retry
+    if retry:
+        main()
+    else:
+        pygame.quit()
+    #return retry
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
-    if x < 5 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
+    if x < 3 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
         x = random.randint(0,1)
         if x == 1:
             right = True
