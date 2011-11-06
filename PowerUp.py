@@ -17,7 +17,15 @@ class PowerUp(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.rect = self.rect.move(x,y)
-        self.type = random.randint(0,4)
+        x = random.randint(0,100)
+        if x < 30:
+            self.type = 0
+        elif x < 70:
+            self.type = 3
+        elif x < 90:
+            self.type = 1
+        elif x <= 100:
+            self.type = 2
         #0 = MaxArrows + 10
         #1 = Multi Shot 3 Arrows
         #2 = Rapid Fire (Infinite Arrows)

@@ -9,7 +9,7 @@ from Arrow import *
 from Explo import *
 from PowerUp import *
 def main():
-    menu = True
+    menu = False
     pygame.init()
     fpsClock = pygame.time.Clock()
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
@@ -180,7 +180,7 @@ def main():
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
-        gravitySurfaceObj = fontObj.render("Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
+        gravitySurfaceObj = fontObj.render("Anti-Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
         windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
         windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
         #player.updatePos()
@@ -217,7 +217,7 @@ def main():
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
                             x = random.randint(0,100)
-                            if x < 33:
+                            if x <= 20:
                                 tmp = PowerUp(enx,eny)
                                 PowerUpList.append(tmp)
                             soundObjectExplosion.play()
@@ -242,7 +242,7 @@ def main():
                         player.MultiShot2 = True
                     player.MultiShot = True
                 elif PowerUpList[i].type == 2:
-                    player.RapidFire = True
+                    player.ArrowReplRate += .1
                 elif PowerUpList[i].type == 3:
                     if HP + 10 >= 100:
                         HP = 100
@@ -259,10 +259,7 @@ def main():
         pygame.display.flip()
         fpsClock.tick(30)
         if player.Arrows + 1 <= player.ArrowsMax:
-            if player.RapidFire:
-                player.ArrowsRepl += 1
-            else:
-                player.ArrowsRepl += .5
+            player.ArrowsRepl += player.ArrowsReplRate
             if player.ArrowsRepl >= 1.0:
                 player.Arrows += 1
                 player.ArrowsRepl = 0.0
@@ -350,7 +347,9 @@ def enemyGenerator(enemyList, maxEnemies):
             right = True
         else:
             right = False
-        speed = random.randint(1, 15)
+        speed = random.randint(1, 4)
+        speed += random.randint(0, 4)
+        speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             enemyList.append(Enemyflying(right, speed))
         else:
