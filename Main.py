@@ -25,6 +25,12 @@ def main():
     enemyList = []
 
 
+    #Enemy variables
+    maxEnemies = 25
+    enemyList = []
+
+    #Castle HP
+    HP = 100
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     #Main Loop
@@ -36,9 +42,14 @@ def main():
 
         #Enemy code
         enemyGenerator(enemyList, maxEnemies)
-        for enemy in enemyList:
-            windowSurfaceObj.blit(enemy.images[enemy.image],enemy.rect)
-            enemy.updateEnemyPos()
+        count = len(enemyList) - 1
+        while(count >= 0):
+            windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
+            if enemyList[count].updateEnemyPos(enemyList, count):
+                HP = HP -5
+                if HP < 0:
+                    HP = 0
+            count = count - 1
 
         skipFall = False
         for event in pygame.event.get():
@@ -96,6 +107,9 @@ def main():
             skipFall = True
 
         #player.updateVector(mousex,mousey)
+        #Castle health bar
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (540, 260, HP * 2, 20))
         #player.updatePos()
         if not skipFall:
             player.fall()
