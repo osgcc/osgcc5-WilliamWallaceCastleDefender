@@ -7,6 +7,7 @@ from Enemy import *
 from Enemyflying import *
 from Arrow import *
 from Explo import *
+from Missile import *
 
 def main():
     menu = True
@@ -18,6 +19,7 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
+    missileList = []
 
     #EXPLOSION
     exploList = []
@@ -38,7 +40,7 @@ def main():
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
     soundObjectArrow = pygame.mixer.Sound("arrow.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
-    pygame.mixer.music.play(-1)
+ #   pygame.mixer.music.play(-1)
 
     gravityLimit = False
     #Main Loop
@@ -55,6 +57,12 @@ def main():
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
             enx = enemyList[count].x
             eny = enemyList[count].y
+            if random.randint(0,100) < 2: #2% chance that an enemy shoots
+                if enemyList[count].right:
+                    speed = -enemyList[count].speed
+                else:
+                    speed = enemyList[count].speed
+                missileList.append(Missile(enx,eny,player.x,player.y, speed))
             if enemyList[count].updateEnemyPos(enemyList, count):
                 HP = HP -5
                 if HP < 0:
@@ -172,8 +180,7 @@ def main():
         #player.updatePos()
         if not skipFall:
             player.fall()
-
-        arrowGroup = pygame.sprite.Group()
+        #Arrow Code
         end = len(ArrowList)
         i = end - 1
         while i >= 0:
@@ -212,6 +219,28 @@ def main():
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
             i = i - 1
+        #Missile Code
+        end = len(missileList)
+        i = end - 1
+        print str(i)+" "+str(len(missileList))
+        while i >= 0:
+            chk = missileList[i].updateMissilePos()
+            if not chk:
+                missileList.pop(i)
+                i = i - 1
+            else:
+                if missileList[i].rect.colliderect(player.rect):
+                    exploList.append(Explo(missileList[i].x, missileList[i].y))
+                    soundObjectExplosion.play()
+                    missileList.pop(i)
+                    chk = False
+                if i<0:
+                    count = -1
+            if chk:
+                missileObj = missileList[i].missileObj
+                windowSurfaceObj.blit(missileObj, missileList[i].rect)
+            i = i -1
+
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
