@@ -13,7 +13,9 @@ from PowerUp import *
 def main():
     menu = False
     pygame.init()
+    textcounter = 0
     fpsClock = pygame.time.Clock()
+    message = ""
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallce Defender X-Treme 2140")
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
@@ -59,6 +61,12 @@ def main():
         count = len(enemyList) - 1
         while(count >= 0):
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
+            if(textcounter > 0):
+                print message
+                textMessage = fontObj.render(str(message), False, pygame.Color(0,0,0))
+                windowSurfaceObj.blit(textMessage, ((1280-textMessage.get_rect().width)/2*1,670))
+                textcounter -= 1
+            
             enx = enemyList[count].x
             eny = enemyList[count].y
             if random.randint(0,100) < 1: #1% chance that an enemy shoots
@@ -196,7 +204,12 @@ def main():
         windowSurfaceObj.blit(pointsSurfaceObj,(300,25))
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
-        gravitySurfaceObj = fontObj.render("Anti-Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
+        gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
+        
+      
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(255,255,0), (20, 120, 200, 20))
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (20, 120, 40, 20))
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (20, 120, player.Gravity*2, 20))
         windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
         windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
         #player.updatePos()
@@ -281,19 +294,29 @@ def main():
             if player.rect.colliderect(PowerUpList[i].rect):
                 if PowerUpList[i].type == 0:
                     player.ArrowsMax += 10
+                    message = "Max Arrows!"
+                    textcounter = 120
                 elif PowerUpList[i].type == 1:
                     if player.MultiShot:
                         player.MultiShot2 = True
                     player.MultiShot = True
+                    message = "Multi Shot!"
+                    textcounter = 120
                 elif PowerUpList[i].type == 2:
                     player.ArrowsReplRate += .1
+                    message = "Rapid Fire!"
+                    textcounter = 120
                 elif PowerUpList[i].type == 3:
                     if HP + 10 >= 100:
                         HP = 100
                     else:
                         HP += 10
+                    message = "Castle HP restored!"
+                    textcounter = 120
                 elif PowerUpList[i].type == 4:
                     player.gunmode = True
+                    message = "Piercing bullets!"
+                    textcounter = 120
                     #soundObjectArrow = pygame.mixer.Sound("laser.wav")
                 PowerUpList.pop(i)
             else:
