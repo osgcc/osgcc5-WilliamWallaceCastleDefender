@@ -1,5 +1,6 @@
 #Main
 import pygame, sys, os, random
+import math
 from pygame.locals import *
 from Player import *
 from Vector import *
@@ -206,10 +207,10 @@ def main():
                             for i in range(0,len(missileList)):
                                 missXp = missileList[i].x
                                 missYp = missileList[i].y
-    
+
                                 diffX = missileList[i].x - player.x
                                 diffY = missileList[i].y - player.y
-    
+
                                 if diffX != 0 and diffY!= 0:
                                     missileList[i].vector = Vector((diffX / sqrt(diffX*diffX + diffY*diffY)), (diffY / sqrt(diffX*diffX + diffY*diffY)))
                                 else:
@@ -226,10 +227,10 @@ def main():
                                     else:
                                         missileList[i].vector = Vector(1,0)
                                 missileList[i].vel = 15
-                    if event.key == K_LCTRL:
+                    if event.key == K_LSHIFT:
                         if player.DecoyNum > 0:
                             player.Decoy(player.x,player.y)
-                            player.DecoyNum -=1
+                            player.DecoyNum -= 1
 
                     if event.key == K_LEFT or event.key == K_a:
                         x = -10
@@ -295,9 +296,12 @@ def main():
             for i in range(0, player.Lives):
                 windowSurfaceObj.blit(SurfaceObjLife,(300+livesSurfaceObj.get_rect().width +(i*(SurfaceObjLife.get_rect().width+25)),25-SurfaceObjLife.get_rect().height/4))
             #Display Arrows and gravity
+            decoysSurfaceObj = fontObj.render("Decoys: " + str(player.DecoyNum), False,pygame.Color(255,255,255))
             #arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
             #gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
-
+            windowSurfaceObj.blit(decoysSurfaceObj,(40,15))
+            repelSurfaceObj = fontObj.render("Repels: " + str(player.Repel), False,pygame.Color(255,255,255))
+            windowSurfaceObj.blit(repelSurfaceObj,(40,70))
 
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,255,0), (20, 120, 200, 20))
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (20, 120, 40, 20))
@@ -329,7 +333,6 @@ def main():
                             if(enemyList[count].Hit(enemyList,count,5)):
                                 exploList.append(Explo(enx, eny, False))
                                 x = random.randint(0,100)
-                                #print x
                                 if x <= 25:
                                     tmp = PowerUp(enx,eny)
                                     PowerUpList.append(tmp)
@@ -486,7 +489,7 @@ def main():
                 windowSurfaceObj.blit(ShieldList[count].images[ShieldList[count].image], ShieldList[count].rect)
                 ShieldList[count].x = player.x
                 ShieldList[count].y = player.y
-                
+
                 if(ShieldList[count].move(0,0)):
                     ShieldList.pop(count)
                 count = count - 1
@@ -603,7 +606,7 @@ def enemyGenerator(enemyList, maxEnemies,points):
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             e = Enemyflying(right,speed)
-            if random.randint(0,20) < 2 * points/100:
+            if random.randint(0,10) < 3 * math.ceil(points/100):
                 e.boss = True
                 e.speed = 8
             else:
