@@ -8,8 +8,9 @@ from Enemyflying import *
 from Arrow import *
 from Explo import *
 from Missile import *
-
+from Bomb import *
 from PowerUp import *
+
 def main():
     menu = True
     pygame.init()
@@ -26,6 +27,7 @@ def main():
     ArrowList = []
     missileList = []
 
+    BombList = []
     PowerUpList = []
     #EXPLOSION
     exploList = []
@@ -262,9 +264,12 @@ def main():
                             exploList.append(Explo(enx, eny, False))
                             x = random.randint(0,100)
                             #print x
-                            if x <= 90:
+                            if x <= 20:
                                 tmp = PowerUp(enx,eny)
                                 PowerUpList.append(tmp)
+                            elif x > 93:
+                                b = Bomb(enx,eny)
+                                BombList.append(b)
                             soundObjectExplosion.play()
                         points = points + 5
                         if points / LifeUp >= 100:
@@ -278,6 +283,27 @@ def main():
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
             i = i - 1
+
+        #Bomb Code
+        i = len(BombList) - 1
+        while i >= 0:
+            if BombList[i].rect.colliderect(player.rect):
+                killAllEnemies(enemyList, exploList, soundObjectExplosion)
+                points = points + 30
+                if points / LifeUp >= 100:
+                    LifeUp += 1
+                    player.Lives += 1
+                for i in range(0,60):
+                    x = random.randint(0,1280)
+                    y = random.randint(0,720)
+                    z = random.randint(0,1)
+                    exploList.append(Explo(x, y, z))
+                BombList = []
+                i = -1
+            else:
+                windowSurfaceObj.blit(BombList[i].image, BombList[i].rect)
+            i = i - 1
+
 
         #Missile Code
         end = len(missileList)
