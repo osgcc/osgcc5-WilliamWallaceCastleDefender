@@ -333,6 +333,7 @@ def main():
                             if(enemyList[count].Hit(enemyList,count,5)):
                                 exploList.append(Explo(enx, eny, False))
                                 x = random.randint(0,100)
+                                #print x
                                 if x <= 25:
                                     tmp = PowerUp(enx,eny)
                                     PowerUpList.append(tmp)
@@ -534,7 +535,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-    menubkg = pygame.image.load(os.path.join(os.path.curdir, braveheart.jpg)).convert_alpha()
+    menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
     fontObj = pygame.font.Font('freesansbold.ttf', 110)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
@@ -606,7 +607,7 @@ def enemyGenerator(enemyList, maxEnemies,points):
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             e = Enemyflying(right,speed)
-            if random.randint(0,10) < 3 * math.ceil(points/100):
+            if random.randint(0,20) < 2 * math.ceil(points/100):
                 e.boss = True
                 e.speed = 8
             else:
