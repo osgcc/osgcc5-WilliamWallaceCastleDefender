@@ -29,7 +29,7 @@ def main():
     #Castle HP
     HP = 100
     points = 0
-    if menu == False:
+    if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     pygame.key.set_repeat(1,50)
     playing = True
@@ -97,12 +97,21 @@ def main():
                     if player.Arrows - 1 >= 0:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
-                        arrow = Arrow(player.x,player.y+24,mousex,mousey+30)
-                        ArrowList.append(arrow)
-                        arrow = Arrow(player.x,player.y+24,mousex,mousey-30)
-                        ArrowList.append(arrow)
+                        if player.MultiShot2:
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+20)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-20)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+40)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-40)
+                            ArrowList.append(arrow)
+                        elif player.MultiShot:
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+30)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-30)
+                            ArrowList.append(arrow)
                         soundObjectArrow.play()
-
                         player.Arrows -= 1
 
                     #left, middle, right button
@@ -207,6 +216,7 @@ def main():
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
+
                             tmp = PowerUp(enx,eny)
                             PowerUpList.append(tmp)
                             soundObjectExplosion.play()
@@ -230,6 +240,13 @@ def main():
                     player.MultiShot = True
                 elif PowerUpList[i].type == 2:
                     player.RapidFire = True
+                elif PowerUpList[i].type == 3:
+                    player.MultiShot2 = True
+                elif PowerUpList[i].type == 4:
+                    if HP + 10 >= 100:
+                        HP = 100
+                    else:
+                        HP += 10
                 PowerUpList.pop(i)
             else:
                 windowSurfaceObj.blit(PowerUpList[i].images[PowerUpList[i].image], PowerUpList[i].rect)
