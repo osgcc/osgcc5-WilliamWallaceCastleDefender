@@ -21,8 +21,7 @@ class PowerUp(pygame.sprite.Sprite):
         #0 = MaxArrows + 10
         #1 = Multi Shot 3 Arrows
         #2 = Rapid Fire (Infinite Arrows)
-        #4 = Multi Shot 5 Arrows
-        #5 = Heal Castle
+        #3 = Heal Castle
 
     def updateBoxSprite(self):
         self.framenumber += 0.33

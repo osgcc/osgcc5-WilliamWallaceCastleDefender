@@ -216,9 +216,10 @@ def main():
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
-
-                            tmp = PowerUp(enx,eny)
-                            PowerUpList.append(tmp)
+                            x = random.randint(0,100)
+                            if x < 33:
+                                tmp = PowerUp(enx,eny)
+                                PowerUpList.append(tmp)
                             soundObjectExplosion.play()
                         points = points + 5
                         chk = False
@@ -237,12 +238,12 @@ def main():
                 if PowerUpList[i].type == 0:
                     player.ArrowsMax += 10
                 elif PowerUpList[i].type == 1:
+                    if player.MultiShot:
+                        player.MultiShot2 = True
                     player.MultiShot = True
                 elif PowerUpList[i].type == 2:
                     player.RapidFire = True
                 elif PowerUpList[i].type == 3:
-                    player.MultiShot2 = True
-                elif PowerUpList[i].type == 4:
                     if HP + 10 >= 100:
                         HP = 100
                     else:
@@ -343,14 +344,14 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
-    if x < 2 and len(enemyList) < maxEnemies: # 2% chance enemy will be generated
+    if x < 5 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
         x = random.randint(0,1)
         if x == 1:
             right = True
         else:
             right = False
         speed = random.randint(1, 15)
-        if random.randint(0, 100) < 33: # 33% chance enemy will be flying
+        if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             enemyList.append(Enemyflying(right, speed))
         else:
             enemyList.append(Enemy(right, speed))
