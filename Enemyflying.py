@@ -9,7 +9,7 @@ class Enemyflying(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.HP = 5
         self.image = 0
-        self.right = 0
+        self.right = right
         self.framenumber = 0
         self.images = [pygame.image.load(os.path.join(os.curdir, 'flyingenemy1.png')).convert_alpha(),
                       pygame.image.load(os.path.join(os.curdir, 'flyingenemy2.png')).convert_alpha(),

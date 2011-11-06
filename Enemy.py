@@ -37,7 +37,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image = (int(self.framenumber)) % totalframes + framestart
 
     def updateEnemyPos(self,enemyList, index):
-        self.image = (self.image + 1) % 8
+        #self.image = (self.image + 1) % 8
         if(self.right):
             self.updateEnemySprite(4,4)
         else:
