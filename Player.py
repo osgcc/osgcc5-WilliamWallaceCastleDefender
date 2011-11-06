@@ -6,7 +6,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path,join(os.curdir, 'wallacetemp.png')).convert()
+        self.image = pygame.image.load(os.path.join(os.curdir, 'wallacetemp.png')).convert()
         self.rect = self.image.get_rect()
         self.vel = 10
         self.x = 0
