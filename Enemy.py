@@ -36,6 +36,6 @@ class Enemy(pygame.sprite.Sprite):
             self.rect = self.rect.move(self.speed,0)
 
     def Hit(self, enemyList, index, dmg):
-        self.HP = slef.HP - dmg
+        self.HP = self.HP - dmg
         if self.HP < 1:
             enemyList.pop(index)
