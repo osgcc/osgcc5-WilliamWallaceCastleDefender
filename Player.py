@@ -59,6 +59,10 @@ class Player(pygame.sprite.Sprite):
         self.MultiShot2 = False
         self.Lives = 3
         self.Repel = 30
+        self.DecoyNum = 3
+        self.DecoyCounter = 0
+        self.DecoyX = 0
+        self.DecoyY = 0
 
     def updateVector(self,x,y):
 
@@ -126,7 +130,10 @@ class Player(pygame.sprite.Sprite):
         self.vel -= 1
         self.updatePlayerPos(0,-self.vel)
 
-
+    def Decoy(self,x,y):
+        self.DecoyX = x
+        self.DecoyY = y
+        self.DecoyCounter = 1000
 
 
 
