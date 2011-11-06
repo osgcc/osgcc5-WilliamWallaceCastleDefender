@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
                     pygame.image.load(os.path.join(os.curdir, 'start.png')).convert_alpha(),
                     pygame.image.load(os.path.join(os.curdir, 'bowl.png')).convert_alpha(),
                     pygame.image.load(os.path.join(os.curdir, 'bowr.png')).convert_alpha(),
-                    pygame.image.load(os.path.join(os.curdir, 'dead.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'hurt.png')).convert_alpha(),
                     pygame.image.load(os.path.join(os.curdir, 'dead.png')).convert_alpha()
                     ]
 
