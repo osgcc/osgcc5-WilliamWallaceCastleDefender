@@ -13,6 +13,7 @@ from PowerUp import *
 def main():
     menu = True
     pygame.init()
+    deathcounter = 0
     textcounter = 0
     fpsClock = pygame.time.Clock()
     message = ""
@@ -345,6 +346,9 @@ def main():
                 else:
                     player.ArrowsMax = 20
                     player.ArrowsReplRate = 0.05
+                    killAllEnemies(enemyList, exploList, soundObjectExplosion)
+                    missileList=[]
+                    arrowsList=[]
                     player.RapidFire = False
                     player.MultiShot = False
                     player.MultiShot2 = False
@@ -390,7 +394,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     redColor = pygame.Color(255,0,0)
     blueColor = pygame.Color(0,0,255)
 
-    headSurfaceObj = pygame.image.load('spritel1.png')
+    headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
 
