@@ -23,6 +23,9 @@ def main():
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallace Castle Defender X-Treme 2140")
     soundObjectExplosion = pygame.mixer.Sound('explosion.wav')
+    soundDecoy = pygame.mixer.Sound('decoy.wav')
+    soundPwp = pygame.mixer.Sound('powerup.wav')
+    soundShld = pygame.mixer.Sound('zap2.wav')
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
     SurfaceObjLife = pygame.image.load("life.png")
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
@@ -198,6 +201,7 @@ def main():
                     y = 0
                     if event.key == K_SPACE:
                         if player.Repel > 0:
+                            soundShld.play()
                             ShieldList.append(Shield(player.x, player.y))
                             player.Repel -= 1
 
@@ -228,6 +232,7 @@ def main():
                                 missileList[i].vel = 15
                     if event.key == K_LSHIFT:
                         if player.DecoyNum > 0:
+                            soundDecoy.play()
                             player.Decoy(player.x,player.y)
                             player.DecoyNum -= 1
 
@@ -421,6 +426,7 @@ def main():
             while i >= 0:
                 PowerUpList[i].updateBoxSprite()
                 if player.rect.colliderect(PowerUpList[i].rect):
+                    soundPwp.play()
                     if PowerUpList[i].type == 0:
                         player.Repel += 1
                         message = "Repel!"
@@ -533,8 +539,11 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
+
     menubkg = pygame.image.load(os.path.join(os.path.curdir, "braveheart.jpg")).convert_alpha()
+
     menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
+
     fontObj = pygame.font.Font('freesansbold.ttf', 110)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
