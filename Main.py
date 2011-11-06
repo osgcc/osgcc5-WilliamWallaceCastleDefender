@@ -60,16 +60,25 @@ def main():
         mousex = player.x
         mousey = player.y
 
+        #DRAW EXLPLOSIONS
+        count = len(exploList) - 1
+        while(count >= 0):
+            windowSurfaceObj.blit(exploList[count].images[exploList[count].image], exploList[count].rect)
+            if(exploList[count].updateEnemyPos()):
+                exploList.pop(count)
+            count = count - 1
+        if(textcounter > 0):
+                #print message
+                textMessage = fontObj.render(str(message), False, pygame.Color(0,0,0))
+                windowSurfaceObj.blit(textMessage, ((1280-textMessage.get_rect().width)/2*1,670))
+                textcounter -= 1   
+        
         #Enemy code
         enemyGenerator(enemyList, maxEnemies)
         count = len(enemyList) - 1
         while(count >= 0):
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
-            if(textcounter > 0):
-                #print message
-                textMessage = fontObj.render(str(message), False, pygame.Color(0,0,0))
-                windowSurfaceObj.blit(textMessage, ((1280-textMessage.get_rect().width)/2*1,670))
-                textcounter -= 1
+            
 
             enx = enemyList[count].x
             eny = enemyList[count].y
@@ -82,7 +91,7 @@ def main():
                 else:
                     speed = enemyList[count].speed
                 tmp = random.randint(0,100)
-                if chance == 10:
+                if chance == 5:
                     for i in range(0,30):
                         m = Missile(enx+random.randint(-180,180),eny+random.randint(-180,180),player.x+random.randint(-180,180),player.y+random.randint(-180,180),speed)
                         missileList.append(m)
@@ -117,14 +126,6 @@ def main():
                     playing = False
 
                 exploList.append(Explo(enx, eny, False))
-            count = count - 1
-
-        #DRAW EXLPLOSIONS
-        count = len(exploList) - 1
-        while(count >= 0):
-            windowSurfaceObj.blit(exploList[count].images[exploList[count].image], exploList[count].rect)
-            if(exploList[count].updateEnemyPos()):
-                exploList.pop(count)
             count = count - 1
 
 

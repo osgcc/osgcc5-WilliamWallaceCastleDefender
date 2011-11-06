@@ -10,6 +10,7 @@ class Enemyflying(pygame.sprite.Sprite):
         self.HP = 5
         self.image = 0
         self.right = right
+        self.boss = False
         self.framenumber = 0
         self.images = [pygame.image.load(os.path.join(os.curdir, 'flyingenemy1.png')).convert_alpha(),
                       pygame.image.load(os.path.join(os.curdir, 'flyingenemy2.png')).convert_alpha(),
@@ -22,17 +23,7 @@ class Enemyflying(pygame.sprite.Sprite):
                       pygame.image.load(os.path.join(os.curdir, 'flyingenemy9.png')).convert_alpha(),
                       pygame.image.load(os.path.join(os.curdir, 'flyingenemy10.png')).convert_alpha()
                       ]
-        self.images = [pygame.image.load(os.path.join(os.curdir, 'boss1.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss2.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss3.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss4.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss5.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss6.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss7.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss8.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss9.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'boss10.png')).convert_alpha()
-                      ]
+            
         self.rect = self.images[self.image].get_rect()
         if right == True:
             self.x = 1280
@@ -45,6 +36,18 @@ class Enemyflying(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.x, self.y)
 
     def updateEnemySprite(self, framestart, totalframes):
+        if(self.boss):
+            self.images = [pygame.image.load(os.path.join(os.curdir, 'boss1.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss2.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss3.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss4.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss5.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss6.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss7.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss8.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss9.png')).convert_alpha(),
+                          pygame.image.load(os.path.join(os.curdir, 'boss10.png')).convert_alpha()
+                          ]
         self.framenumber += 0.33
         if(self.framenumber > framestart + totalframes or self.framenumber < framestart):
             self.framenumber = framestart
