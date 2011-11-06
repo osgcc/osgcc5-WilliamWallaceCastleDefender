@@ -114,10 +114,10 @@ def main():
                     x = -10
                 #player.updatePlayerPos(x,0)
                 if y != 0:
-                    if player.Gravity - 2 >= 0 and gravityLimit:
+                    if player.Gravity - 1 >= 0 and gravityLimit:
                         player.jet()
                         skipFall = True
-                        player.Gravity -= 2
+                        player.Gravity -= 1
                     else:
                         if player.Gravity >= 20:
                             gravityLimit = True
@@ -141,7 +141,7 @@ def main():
             if player.Gravity - 1 >= 0 and gravityLimit:
                 player.jet()
                 skipFall = True
-                player.Gravity -= 2
+                player.Gravity -= 1
             else:
                 if player.Gravity >= 20:
                     gravityLimit = True
@@ -168,7 +168,6 @@ def main():
         arrowGroup = pygame.sprite.Group()
         end = len(ArrowList)
         i = end - 1
-        print i
         while i >= 0:
             chk = ArrowList[i].updateArrowPos()
             if not chk:
@@ -179,13 +178,8 @@ def main():
                 count = end
                 chk = True
                 while count >= 0:
-                    if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
-                        print "You broke it"
-                        print "no"
-                        print i
-                        print len(ArrowList)-1
-                        print count
-                        print len(enemyList)-1
+                    tmp = ArrowList[i]
+                    tmp = enemyList[count]
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
                         ArrowList.pop(i)
                         i = i - 1
@@ -196,6 +190,8 @@ def main():
                         points = points + 5
                         chk = False
                     count -= 1
+                    if i < 0:
+                        count = -1
                 if chk:
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)

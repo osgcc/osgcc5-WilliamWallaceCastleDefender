@@ -49,7 +49,7 @@ class Arrow(pygame.sprite.Sprite):
                 else:
                     self.vector = Vector(1,0)
         self.valid = True
-        self.vel = 25
+        self.vel = 35
         if self.vector.x > 0:
             self.ArrowObj = pygame.transform.rotate(self.image, 180 + direction(-self.vector.x,self.vector.y))
         else:
