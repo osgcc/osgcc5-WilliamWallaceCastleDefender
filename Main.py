@@ -42,7 +42,7 @@ def main():
                         y = 1
                     elif K_DOWN:
                         y = -1
-                    player.updatePos(x)
+                    player.updatePos(x,y)
 
                     #ARROW KEY
                 elif event.key == K_ESCAPE:
