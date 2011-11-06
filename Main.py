@@ -11,13 +11,13 @@ from Missile import *
 
 from PowerUp import *
 def main():
-    menu = False
+    menu = True
     pygame.init()
     textcounter = 0
     fpsClock = pygame.time.Clock()
     message = ""
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
-    pygame.display.set_caption("William Wallce Defender X-Treme 2140")
+    pygame.display.set_caption("William Wallace Castle Defender X-Treme 2140")
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
     SurfaceObjLife = pygame.image.load("life.png")
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
@@ -279,6 +279,10 @@ def main():
                     else:
                         player.ArrowsMax = 20
                         player.ArrowsReplRate = 0.05
+                        missileList = []
+                        arrowList = []
+                        #TODO
+                        killAllEnemies(enemyList, exploList, soundObjectExplosion)
                         player.RapidFire = False
                         player.MultiShot = False
                         player.MultiShot2 = False
@@ -369,6 +373,17 @@ def main():
         main()
     else:
         pygame.quit()
+        
+def killAllEnemies(enemyList, exploList, soundObjectExplosion):
+    count = len(enemyList) - 1
+    while(count >= 0):
+        enx = enemyList[count].x
+        eny = enemyList[count].y
+        exploList.append(Explo(enx, eny, False))
+        soundObjectExplosion.play()
+        enemyList[count].Hit(enemyList, count, 50)
+        count = count - 1
+    
 
 #Game Over Function
 def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
@@ -460,7 +475,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     pygame.mixer.music.load("Menu.mp3")
     pygame.mixer.music.play(-1)
 
-    headSurfaceObj = pygame.image.load('spritel1.png')
+    headSurfaceObj = pygame.image.load('start.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
@@ -478,7 +493,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
 
         #Top Menu
         if menuType == 0:
-            menuTitle1 = fontObj1.render("William Wallace Defender", False,
+            menuTitle1 = fontObj1.render("William Wallace Castle Defender", False,
 greenColor)
             menuTitle2 = fontObj2.render("X-TREME 2140", False, redColor)
             if selection == 0:
