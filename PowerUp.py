@@ -26,11 +26,11 @@ class PowerUp(pygame.sprite.Sprite):
             self.type = 3
         elif x < 60:
             self.type = 1
-        elif x <= 100:
+        elif x <= 80:
             self.type = 2
         #0 = Repel
         #1 = Multi Shot 3 Arrows
-        #2 = Rapid Fire (Infinite Arrows)
+        #2 = Decoy
         #3 = Heal Castle
         #4 = Piercing rounds
 
