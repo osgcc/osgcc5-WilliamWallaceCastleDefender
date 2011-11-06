@@ -23,7 +23,7 @@ class Enemyflying(pygame.sprite.Sprite):
                       pygame.image.load(os.path.join(os.curdir, 'flyingenemy9.png')).convert_alpha(),
                       pygame.image.load(os.path.join(os.curdir, 'flyingenemy10.png')).convert_alpha()
                       ]
-            
+
         self.rect = self.images[self.image].get_rect()
         if right == True:
             self.x = 1280
@@ -59,7 +59,7 @@ class Enemyflying(pygame.sprite.Sprite):
             self.updateEnemySprite(5,5)
         else:
             self.updateEnemySprite(0,5)
-        if self.x + self.speed < 513 or self.x + self.speed > 745:
+        if self.x + self.speed < 513 or self.x + self.speed > 715:
             self.x += self.speed
             self.rect = self.rect.move(self.speed,0)
         else:
