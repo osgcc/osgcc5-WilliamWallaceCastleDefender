@@ -6,7 +6,7 @@ from Vector import *
 from Enemy import *
 from Enemyflying import *
 from Arrow import *
-
+from Explo import *
 
 def main():
     menu = False
@@ -19,11 +19,14 @@ def main():
     player = Player()
     pygame.key.set_repeat(1,50)
     ArrowList = []
+    
+    #EXPLOSION
+    exploList = []
 
     #Enemy variables
     maxEnemies = 25
     enemyList = []
-
+    
     #Castle HP
     HP = 100
     points = 0
@@ -42,12 +45,24 @@ def main():
         count = len(enemyList) - 1
         while(count >= 0):
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
+            enx = enemyList[count].x
+            eny = enemyList[count].y
             if enemyList[count].updateEnemyPos(enemyList, count):
                 HP = HP -5
                 if HP < 0:
                     HP = 0
+                exploList.append(Explo(enx, eny))
             count = count - 1
 
+        #DRAW EXLPLOSIONS
+        count = len(exploList) - 1
+        while(count >= 0):
+            windowSurfaceObj.blit(exploList[count].images[exploList[count].image], exploList[count].rect)
+            if(exploList[count].updateEnemyPos()):
+                exploList.pop(count)
+            count = count - 1
+                
+            
         skipFall = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -152,7 +167,11 @@ def main():
                 chk = True
                 while count >= 0:
                     if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
+<<<<<<< HEAD
                         print "You broke it"
+=======
+                        print "no"
+>>>>>>> origin/master
                         print i
                         print len(ArrowList)-1
                         print count
@@ -160,7 +179,10 @@ def main():
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
                         ArrowList.pop(i)
                         i = i - 1
-                        enemyList[count].Hit(enemyList,count,5)
+                        enx = enemyList[count].x
+                        eny = enemyList[count].y
+                        if(enemyList[count].Hit(enemyList,count,5)):
+                            exploList.append(Explo(enx, eny))
                         points = points + 5
                         chk = False
                     count -= 1
@@ -183,6 +205,10 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
+<<<<<<< HEAD
+=======
+        #print player.Gravity
+>>>>>>> origin/master
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):

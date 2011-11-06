@@ -54,3 +54,4 @@ class Enemy(pygame.sprite.Sprite):
         self.HP = self.HP - dmg
         if self.HP < 1:
             enemyList.pop(index)
+            return True;
