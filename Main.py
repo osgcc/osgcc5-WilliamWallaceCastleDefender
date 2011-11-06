@@ -7,12 +7,9 @@ from Enemy import *
 from Enemyflying import *
 from Arrow import *
 from Explo import *
-<<<<<<< HEAD
 from Missile import *
 
-=======
 from PowerUp import *
->>>>>>> origin/master
 def main():
     menu = False
     pygame.init()
@@ -23,12 +20,9 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
-<<<<<<< HEAD
     missileList = []
 
-=======
     PowerUpList = []
->>>>>>> origin/master
     #EXPLOSION
     exploList = []
 
@@ -48,11 +42,8 @@ def main():
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
     soundObjectArrow = pygame.mixer.Sound("arrow.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
-<<<<<<< HEAD
  #   pygame.mixer.music.play(-1)
-=======
     #pygame.mixer.music.play(-1)
->>>>>>> origin/master
 
     gravityLimit = False
     #Main Loop
@@ -69,7 +60,7 @@ def main():
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
             enx = enemyList[count].x
             eny = enemyList[count].y
-            if random.randint(0,100) < 2: #2% chance that an enemy shoots
+            if random.randint(0,100) < 1: #1% chance that an enemy shoots
                 if enemyList[count].right:
                     speed = -enemyList[count].speed
                 else:
@@ -285,7 +276,7 @@ def main():
                         player.MultiShot2 = True
                     player.MultiShot = True
                 elif PowerUpList[i].type == 2:
-                    player.ArrowReplRate += .1
+                    player.ArrowsReplRate += .1
                 elif PowerUpList[i].type == 3:
                     if HP + 10 >= 100:
                         HP = 100
