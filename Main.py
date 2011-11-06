@@ -29,8 +29,9 @@ def main():
     points = 0
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
+    Playing = True
     #Main Loop
-    while True:
+    while Playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
         windowSurfaceObj.blit(level,(0,0))
         mousex = player.x
@@ -45,6 +46,8 @@ def main():
                 HP = HP -5
                 if HP < 0:
                     HP = 0
+                if HP == 0:
+                    gameOver(Playing)
             count = count - 1
 
         skipFall = False
@@ -58,7 +61,7 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
-                    arrow = Arrow(player.x,player.y+24,mousex,mousey)
+                    arrow = Arrow(player.x,player.y,mousex,mousey)
                     ArrowList.append(arrow)
                     #left, middle, right button
                 elif event.button in (4,5):
@@ -110,6 +113,11 @@ def main():
         fontObj = pygame.font.Font('freesansbold.ttf', 32)
         pointsSurfaceObj = fontObj.render("Points: " + str(points), False, pygame.Color(255,255,255))
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
+        #Display Arrows and gravity
+        arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
+        gravitySurfaceObj = fontObj.render("Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
+        windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
+        windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
         #player.updatePos()
         if not skipFall:
             player.fall()
@@ -145,6 +153,11 @@ def main():
         pygame.display.flip()
         fpsClock.tick(30)
 
+#Game Over Function
+def gameOver(Playing):
+    print "me"
+
+
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
@@ -154,7 +167,7 @@ def enemyGenerator(enemyList, maxEnemies):
             right = True
         else:
             right = False
-        speed = random.randint(1, 8)
+        speed = random.randint(1, 15)
         if random.randint(0, 100) < 33: # 33% chance enemy will be flying
             enemyList.append(Enemyflying(right, speed))
         else:
