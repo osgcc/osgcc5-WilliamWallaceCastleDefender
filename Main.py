@@ -22,9 +22,10 @@ def main():
     while True:
         windowSurfaceObj.blit(desertBackground,(0,0))
         windowSurfaceObj.blit(level,(0,0))
-
         mousex = player.x
         mousey = player.y
+
+        skipFall = False
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -33,7 +34,6 @@ def main():
                 mousex, mousey = event.pos
                 player.updateVector(mousex,mousey)
             elif event.type == MOUSEBUTTONUP:
-                mousex, mousey = event.pos
                 if event.button in (1,2,3):
                     blah = "blah"
                     #left, middle, right button
@@ -47,20 +47,19 @@ def main():
                     x = -10
                 if event.key == K_RIGHT:
                     x = 10
-                if event.key == K_DOWN:
-                    y = 10
                 if event.key == K_UP:
-                    y = -10
+                    y = -.5
                 keystate =  pygame.key.get_pressed()
                 if keystate[pygame.locals.K_UP]:
                     y = -10
-                if keystate[pygame.locals.K_DOWN]:
-                    y = 10
                 if keystate[pygame.locals.K_RIGHT]:
                     x = 10
                 if keystate[pygame.locals.K_LEFT]:
                     x = -10
-                player.updatePlayerPos(x,y)
+                #player.updatePlayerPos(x,0)
+                if y != 0:
+                    player.jet()
+                    skipFall = True
                 if event.key == K_ESCAPE:
                     pygame.event.post(pygame.event.Event(QUIT))
             #else:
@@ -69,18 +68,20 @@ def main():
         keystate =  pygame.key.get_pressed()
         if keystate[pygame.locals.K_UP]:
             y = -10
-        if keystate[pygame.locals.K_DOWN]:
-            y = 10
         if keystate[pygame.locals.K_RIGHT]:
             x = 10
         if keystate[pygame.locals.K_LEFT]:
             x = -10
         if(x != 0 or y != 0):
-            player.updatePlayerPos(x,y)
-
+            player.updatePlayerPos(x,0)
+        if y != 0:
+            player.jet()
+            skipFall = True
 
         #player.updateVector(mousex,mousey)
         #player.updatePos()
+        if not skipFall:
+            player.fall()
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
         pygame.display.flip()

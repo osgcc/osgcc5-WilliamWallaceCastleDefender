@@ -12,24 +12,40 @@ class Player(pygame.sprite.Sprite):
     right = 720
 
     def __init__(self):
+        self.image = 17
+        self.framenumber = 0
+        self.swinging = 4;
         pygame.sprite.Sprite.__init__(self)
         self.image = 0
         self.images = [pygame.image.load(os.path.join(os.curdir, 'spritel1.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel2.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel3.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel4.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel5.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel6.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel7.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha()]
+                    pygame.image.load(os.path.join(os.curdir, 'spritel2.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spritel3.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spritel4.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spritel5.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spritel6.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spritel7.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter1.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter2.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter3.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter4.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter5.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter6.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter7.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'spriter8.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'jump.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'start.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'bowl.png')).convert_alpha(),
+                    pygame.image.load(os.path.join(os.curdir, 'bowr.png')).convert_alpha(),
+                    ]
+
         self.rect = self.images[self.image].get_rect()
         self.rect = self.rect.move(300,600)
-        self.vel = 10
-        self.x = 323
-        self.y = 624
+        self.vel = 0
+        self.x = 300
+        self.y = 600
         self.dir = 1 # 1: Right -1: Left
         self.vector = Vector(self.x,self.y)
-
 
     def updateVector(self,x,y):
 
@@ -49,17 +65,45 @@ class Player(pygame.sprite.Sprite):
 
     def updatePlayerPos(self,x,y):
         self.image = (self.image + 1) % 8
-        print self.x + x
-        print self.y + y
-        if self.x + x < 1280 and self.x + x > 10:
+        x = int(x)
+        y = int(y)
+        if self.x + x < 1252 and self.x + x > -5:
             self.x += x
             self.rect = self.rect.move(x,0)
-        if self.y + y < 630 and self.y + y > 10:
+        if self.y + y < 600 and self.y + y > 0:
             self.y += y
             self.rect = self.rect.move(0,y)
+        if self.y + y > 600:
+            self.rect = self.rect.move(0,600-self.y)
+            self.y = 600
 
+    def updatePlayerSprite(self, framestart, totalframes):
+        self.framenumber += 0.5
+        if(self.framenumber > framestart + totalframes or self.framenumber < framestart):
+            self.framenumber = framestart
+        self.image = (int(self.framenumber)) % totalframes + framestart
+        
     def updateArrowPos(self):
         self.x += self.vector.x * self.vel
         self.y += self.vector.y * self.vel
         self.rect = self.rect.move(self.vector.x * self.vel, self.vector.y * self.vel)
+
+    def jet(self):
+        if self.vel <= 0:
+            self.vel = 3
+        else:
+            self.vel *= 1.1
+            if self.vel > 10:
+                self.vel = 10
+        self.updatePlayerPos(0,-self.vel)
+
+    def fall(self):
+        self.vel -= 1
+        self.updatePlayerPos(0,-self.vel)
+
+
+    def arrow(self):
+        print "hi"
+
+
 
