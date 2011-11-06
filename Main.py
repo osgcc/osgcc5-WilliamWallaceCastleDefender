@@ -21,11 +21,6 @@ def main():
     ArrowList = []
 
     #Enemy variables
-    maxEnemies = 10
-    enemyList = []
-
-
-    #Enemy variables
     maxEnemies = 25
     enemyList = []
 
@@ -137,6 +132,7 @@ def main():
                         ArrowList.pop(i)
                         i = i - 1
                         enemyList[count].Hit(enemyList,count,5)
+                        points = points + 5
                         chk = False
                     count -= 1
                 if chk:
