@@ -30,6 +30,7 @@ def main():
 
     #Castle HP
     HP = 100
+    points = 0
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     #Main Loop
@@ -109,6 +110,10 @@ def main():
         #Castle health bar
         pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
         pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (540, 260, HP * 2, 20))
+        #Display Points
+        fontObj = pygame.font.Font('freesansbold.ttf', 32)
+        pointsSurfaceObj = fontObj.render("Points: " + str(points), False, pygame.Color(255,255,255))
+        windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
         #player.updatePos()
         if not skipFall:
             player.fall()
