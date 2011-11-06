@@ -18,7 +18,7 @@ class PowerUp(pygame.sprite.Sprite):
         self.y = y
         self.rect = self.rect.move(x,y)
         x = random.randint(0,100)
-        if x < 20:
+        if x < 10:
             self.type = 4
         elif x < 40:
             self.type = 0
