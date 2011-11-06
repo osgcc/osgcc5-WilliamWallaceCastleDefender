@@ -63,11 +63,11 @@ def main():
         while(count >= 0):
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
             if(textcounter > 0):
-                print message
+                #print message
                 textMessage = fontObj.render(str(message), False, pygame.Color(0,0,0))
                 windowSurfaceObj.blit(textMessage, ((1280-textMessage.get_rect().width)/2*1,670))
                 textcounter -= 1
-            
+
             enx = enemyList[count].x
             eny = enemyList[count].y
             if random.randint(0,100) < 1: #1% chance that an enemy shoots
@@ -75,7 +75,27 @@ def main():
                     speed = -enemyList[count].speed
                 else:
                     speed = enemyList[count].speed
-                missileList.append(Missile(enx,eny,player.x,player.y, speed))
+                tmp = random.randint(0,100)
+                if tmp < 30:
+                    m = Missile(enx,eny,player.x,player.y+20, speed)
+                    missileList.append(m)
+                    m = Missile(enx,eny,player.x,player.y, speed)
+                    missileList.append(m)
+                    m = Missile(enx,eny,player.x,player.y-20, speed)
+                    missileList.append(m)
+                elif tmp < 45:
+                    m = Missile(enx,eny,player.x,player.y+20, speed)
+                    missileList.append(m)
+                    m = Missile(enx,eny,player.x,player.y, speed)
+                    missileList.append(m)
+                    m = Missile(enx,eny,player.x,player.y-20, speed)
+                    missileList.append(m)
+                    m = Missile(enx,eny,player.x,player.y+40, speed)
+                    missileList.append(m)
+                    m = Missile(enx,eny,player.x,player.y-40, speed)
+                    missileList.append(m)
+                else:
+                    missileList.append(Missile(enx,eny,player.x,player.y, speed))
             if enemyList[count].updateEnemyPos(enemyList, count):
                 HP = HP -5
                 if HP < 0:
@@ -208,8 +228,8 @@ def main():
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
         gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
-        
-      
+
+
         pygame.draw.rect(windowSurfaceObj, pygame.Color(255,255,0), (20, 120, 200, 20))
         pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (20, 120, 40, 20))
         pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (20, 120, player.Gravity*2, 20))
@@ -261,7 +281,7 @@ def main():
         #Missile Code
         end = len(missileList)
         i = end - 1
-        #print str(i)+" "+str(len(missileList))
+
         while i >= 0:
             chk = missileList[i].updateMissilePos()
             if not chk:
@@ -273,10 +293,12 @@ def main():
                     soundObjectExplosion.play()
                     missileList.pop(i)
                     player.Lives -= 1
+                    #i = i - 1
                     if player.Lives <= 0 and playing == True:
                         retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                         playing = False
                     else:
+                        i = -1
                         player.ArrowsMax = 20
                         player.ArrowsReplRate = 0.05
                         missileList = []
@@ -293,7 +315,7 @@ def main():
             if chk:
                 missileObj = missileList[i].missileObj
                 windowSurfaceObj.blit(missileObj, missileList[i].rect)
-            i = i -1
+            i = i - 1
 
 
         i = len(PowerUpList) - 1
@@ -373,7 +395,7 @@ def main():
         main()
     else:
         pygame.quit()
-        
+
 def killAllEnemies(enemyList, exploList, soundObjectExplosion):
     count = len(enemyList) - 1
     while(count >= 0):
@@ -383,7 +405,7 @@ def killAllEnemies(enemyList, exploList, soundObjectExplosion):
         soundObjectExplosion.play()
         enemyList[count].Hit(enemyList, count, 50)
         count = count - 1
-    
+
 
 #Game Over Function
 def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
