@@ -24,9 +24,12 @@ def direction(x, y):
 
 
 class Arrow(pygame.sprite.Sprite):
-    def __init__(self,playerX,playerY,mouseX,mouseY):
+    def __init__(self,playerX,playerY,mouseX,mouseY,gun):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(os.curdir, 'arrow.png')).convert_alpha()
+        if(gun):
+            self.image = pygame.image.load(os.path.join(os.curdir, 'missile.png')).convert_alpha()
+        else:
+            self.image = pygame.image.load(os.path.join(os.curdir, 'arrow.png')).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect = self.rect.move(playerX,playerY)
         self.x = playerX

@@ -7,10 +7,14 @@ from Enemy import *
 from Enemyflying import *
 from Arrow import *
 from Explo import *
+<<<<<<< HEAD
 from Missile import *
 
+=======
+from PowerUp import *
+>>>>>>> origin/master
 def main():
-    menu = True
+    menu = False
     pygame.init()
     fpsClock = pygame.time.Clock()
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
@@ -19,8 +23,12 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
+<<<<<<< HEAD
     missileList = []
 
+=======
+    PowerUpList = []
+>>>>>>> origin/master
     #EXPLOSION
     exploList = []
 
@@ -40,7 +48,11 @@ def main():
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
     soundObjectArrow = pygame.mixer.Sound("arrow.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
+<<<<<<< HEAD
  #   pygame.mixer.music.play(-1)
+=======
+    #pygame.mixer.music.play(-1)
+>>>>>>> origin/master
 
     gravityLimit = False
     #Main Loop
@@ -103,8 +115,22 @@ def main():
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
                     if player.Arrows - 1 >= 0:
-                        arrow = Arrow(player.x,player.y+24,mousex,mousey)
+                        arrow = Arrow(player.x,player.y+24,mousex,mousey,player.gunmode)
                         ArrowList.append(arrow)
+                        if player.MultiShot2:
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+20,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-20,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+40,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-40,player.gunmode)
+                            ArrowList.append(arrow)
+                        elif player.MultiShot:
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+30,player.gunmode)
+                            ArrowList.append(arrow)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-30,player.gunmode)
+                            ArrowList.append(arrow)
                         soundObjectArrow.play()
                         player.Arrows -= 1
 
@@ -174,7 +200,7 @@ def main():
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
-        gravitySurfaceObj = fontObj.render("Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
+        gravitySurfaceObj = fontObj.render("Anti-Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
         windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
         windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
         #player.updatePos()
@@ -203,12 +229,18 @@ def main():
                     tmp = ArrowList[i]
                     tmp = enemyList[count]
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
-                        ArrowList.pop(i)
-                        i = i - 1
+                        if(not player.gunmode):
+                            ArrowList.pop(i)
+                            i = i - 1
                         enx = enemyList[count].x
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
+                            x = random.randint(0,100)
+                            print x
+                            if x <= 90:
+                                tmp = PowerUp(enx,eny)
+                                PowerUpList.append(tmp)
                             soundObjectExplosion.play()
                         points = points + 5
                         chk = False
@@ -242,12 +274,38 @@ def main():
             i = i -1
 
 
+        i = len(PowerUpList) - 1
+        while i >= 0:
+            PowerUpList[i].updateBoxSprite()
+            if player.rect.colliderect(PowerUpList[i].rect):
+                if PowerUpList[i].type == 0:
+                    player.ArrowsMax += 10
+                elif PowerUpList[i].type == 1:
+                    if player.MultiShot:
+                        player.MultiShot2 = True
+                    player.MultiShot = True
+                elif PowerUpList[i].type == 2:
+                    player.ArrowReplRate += .1
+                elif PowerUpList[i].type == 3:
+                    if HP + 10 >= 100:
+                        HP = 100
+                    else:
+                        HP += 10
+                elif PowerUpList[i].type == 4:
+                    player.gunmode = True
+                    #soundObjectArrow = pygame.mixer.Sound("laser.wav")
+                PowerUpList.pop(i)
+            else:
+                windowSurfaceObj.blit(PowerUpList[i].images[PowerUpList[i].image], PowerUpList[i].rect)
+            i = i - 1
+
+
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
-        if player.Arrows + 1 <= 20:
-            player.ArrowsRepl += .05
+        if player.Arrows + 1 <= player.ArrowsMax:
+            player.ArrowsRepl += player.ArrowsReplRate
             if player.ArrowsRepl >= 1.0:
                 player.Arrows += 1
                 player.ArrowsRepl = 0.0
@@ -329,14 +387,16 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
-    if x < 2 and len(enemyList) < maxEnemies: # 2% chance enemy will be generated
+    if x < 5 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
         x = random.randint(0,1)
         if x == 1:
             right = True
         else:
             right = False
-        speed = random.randint(1, 15)
-        if random.randint(0, 100) < 33: # 33% chance enemy will be flying
+        speed = random.randint(1, 4)
+        speed += random.randint(0, 4)
+        speed += random.randint(0, 4)
+        if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             enemyList.append(Enemyflying(right, speed))
         else:
             enemyList.append(Enemy(right, speed))

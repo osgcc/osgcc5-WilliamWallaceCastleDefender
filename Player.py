@@ -15,6 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.image = 17
         self.framenumber = 0
         self.swinging = 4;
+        self.gunmode = False;
         pygame.sprite.Sprite.__init__(self)
         self.images = [pygame.image.load(os.path.join(os.curdir, 'spritel1.png')).convert_alpha(),
                     pygame.image.load(os.path.join(os.curdir, 'spritel2.png')).convert_alpha(),
@@ -48,8 +49,12 @@ class Player(pygame.sprite.Sprite):
         self.Arrows = 20
         self.ArrowsMax = 20
         self.ArrowsRepl = 0.0
+        self.ArrowsReplRate = 0.025
         self.Gravity = 100
         self.GravityRepl = 0.0
+        self.RapidFire = False
+        self.MultiShot = False
+        self.MultiShot2 = False
 
     def updateVector(self,x,y):
 
@@ -74,7 +79,9 @@ class Player(pygame.sprite.Sprite):
         #if(x == 0):
         #    if(self.image != 19 and self.image != 18):
         #        self.updatePlayerSprite(17, 1)
-
+        if(self.gunmode):
+            self.images[18] = pygame.image.load(os.path.join(os.curdir, 'gunl.png')).convert_alpha()
+            self.images[19] = pygame.image.load(os.path.join(os.curdir, 'gunr.png')).convert_alpha()
         if self.x + x < 1252 and self.x + x > -5:
             self.x += x
             self.rect = self.rect.move(x,0)
