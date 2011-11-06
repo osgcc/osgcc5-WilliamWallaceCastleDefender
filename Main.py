@@ -82,7 +82,7 @@ def main():
                 else:
                     speed = enemyList[count].speed
                 tmp = random.randint(0,100)
-                if chance == 10:
+                if chance == 5:
                     for i in range(0,30):
                         m = Missile(enx+random.randint(-180,180),eny+random.randint(-180,180),player.x+random.randint(-180,180),player.y+random.randint(-180,180),speed)
                         missileList.append(m)
@@ -145,7 +145,8 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
-                    if player.Arrows - 1 >= 0:
+                    #if player.Arrows - 1 >= 0:
+                    if 1:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey,player.gunmode)
                         ArrowList.append(arrow)
                         if player.MultiShot2:
@@ -163,7 +164,7 @@ def main():
                             arrow = Arrow(player.x,player.y+24,mousex,mousey-30,player.gunmode)
                             ArrowList.append(arrow)
                         soundObjectArrow.play()
-                        player.Arrows -= 1
+                        #player.Arrows -= 1
 
                     #left, middle, right button
                 elif event.button in (4,5):
@@ -236,15 +237,15 @@ def main():
         for i in range(0, player.Lives):
             windowSurfaceObj.blit(SurfaceObjLife,(300+livesSurfaceObj.get_rect().width +(i*(SurfaceObjLife.get_rect().width+25)),25-SurfaceObjLife.get_rect().height/4))
         #Display Arrows and gravity
-        arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
+        #arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
         gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
 
 
         pygame.draw.rect(windowSurfaceObj, pygame.Color(255,255,0), (20, 120, 200, 20))
         pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (20, 120, 40, 20))
         pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (20, 120, player.Gravity*2, 20))
-        windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
-        windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
+        #windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
+        #windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
         #player.updatePos()
         if not skipFall:
             player.fall()
@@ -418,11 +419,11 @@ def main():
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
-        if player.Arrows + 1 <= player.ArrowsMax:
-            player.ArrowsRepl += player.ArrowsReplRate
-            if player.ArrowsRepl >= 1.0:
-                player.Arrows += 1
-                player.ArrowsRepl = 0.0
+        #if player.Arrows + 1 <= player.ArrowsMax:
+        #    player.ArrowsRepl += player.ArrowsReplRate
+        #    if player.ArrowsRepl >= 1.0:
+        #        player.Arrows += 1
+        #        player.ArrowsRepl = 0.0
         if player.Gravity + 1 <= 100:
             player.GravityRepl += .5
             if player.GravityRepl >= 1.0:
@@ -523,7 +524,7 @@ def enemyGenerator(enemyList, maxEnemies):
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             e = Enemyflying(right,speed)
-            if random.randint(0,20) < 1:
+            if random.randint(0,20) < 2:
                 e.boss = True
             else:
                 e.boss = False
