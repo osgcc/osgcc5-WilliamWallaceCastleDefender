@@ -78,7 +78,12 @@ def main():
             windowSurfaceObj.blit(player.images[player.image],player.rect)
             pygame.display.flip()
             fpsClock.tick(30)
+            if(player.Lives <= 0):
+                player.fall()
         else:
+            if(player.Lives <= 0):
+                retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                playing = False
             #Enemy code
             enemyGenerator(enemyList, maxEnemies)
             count = len(enemyList) - 1
@@ -339,8 +344,8 @@ def main():
                         player.Lives -= 1
                         #i = i - 1
                         if player.Lives <= 0 and playing == True:
-                            retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
-                            playing = False
+                            killAllEnemies(enemyList, exploList, soundObjectExplosion)
+                            deathcounter=70
                         else:
                             i = -1
                             player.ArrowsMax = 20
@@ -407,8 +412,8 @@ def main():
                     exploList.append(Explo(enemyList[i].x, enemyList[i].y, True))
                     enemyList.pop(i)
                     if player.Lives <= 0 and playing == True:
-                        retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
-                        playing = False
+                        killAllEnemies(enemyList, exploList, soundObjectExplosion)
+                        deathcounter=70
                     else:
                         player.ArrowsMax = 20
                         player.ArrowsReplRate = 0.05
