@@ -35,11 +35,7 @@ class Enemy(pygame.sprite.Sprite):
             self.x += self.speed
             self.rect = self.rect.move(self.speed,0)
 
-    def swordHit(self, enemyList, index):
-        self.HP = slef.HP - 5
-        if self.HP < 1:
-            enemyList.pop(index)
-    def arrowHit(self, enemyList, index):
-        self.HP = slef.HP - 2.5
+    def Hit(self, enemyList, index, dmg):
+        self.HP = slef.HP - dmg
         if self.HP < 1:
             enemyList.pop(index)

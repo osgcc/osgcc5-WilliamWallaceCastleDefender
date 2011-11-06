@@ -24,9 +24,6 @@ def main():
     maxEnemies = 10
     enemyList = []
 
-    #Enemy variables
-    maxEnemies = 10
-    enemyList = []
 
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
