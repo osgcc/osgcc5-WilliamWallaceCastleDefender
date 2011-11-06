@@ -10,6 +10,7 @@ from Explo import *
 from Missile import *
 from Bomb import *
 from PowerUp import *
+from Shield import *
 
 def main():
     menu = True
@@ -26,6 +27,7 @@ def main():
     player = Player()
     ArrowList = []
     missileList = []
+    ShieldList = []
 
     BombList = []
     PowerUpList = []
@@ -88,7 +90,7 @@ def main():
                 retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                 playing = False
             #Enemy code
-            enemyGenerator(enemyList, maxEnemies,points)
+            enemyGenerator(enemyList, maxEnemies)
             count = len(enemyList) - 1
             while(count >= 0):
                 windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
@@ -97,7 +99,7 @@ def main():
                 enx = enemyList[count].x
                 eny = enemyList[count].y
                 chance = 1
-                if enemyList[count].boss:
+                if enemyList[count].boss == True:
                     chance = 5
                 if random.randint(0,100) < chance: #1% chance that an enemy shoots
                     if enemyList[count].right:
@@ -105,36 +107,30 @@ def main():
                     else:
                         speed = enemyList[count].speed
                     tmp = random.randint(0,100)
-                    if player.DecoyCounter > 0:
-                        playerX = player.DecoyX
-                        playerY = player.DecoyY
-                    else:
-                        playerX = player.x
-                        playerY = player.y
-                    if enemyList[count].boss:
+                    if chance == 5:
                         for i in range(0,30):
                             m = Missile(enx+random.randint(-180,180),eny+random.randint(-180,180),player.x+random.randint(-180,180),player.y+random.randint(-180,180),speed)
                             missileList.append(m)
                     elif tmp < 30:
-                        m = Missile(enx,eny,playerX,playerY+20, speed)
+                        m = Missile(enx,eny,player.x,player.y+20, speed)
                         missileList.append(m)
-                        m = Missile(enx,eny,playerX,playerY, speed)
+                        m = Missile(enx,eny,player.x,player.y, speed)
                         missileList.append(m)
-                        m = Missile(enx,eny,playerX,playerY-20, speed)
+                        m = Missile(enx,eny,player.x,player.y-20, speed)
                         missileList.append(m)
-                    elif tmp < 50:
-                        m = Missile(enx,eny,playerX,playerY+20, speed)
+                    elif tmp < 45:
+                        m = Missile(enx,eny,player.x,player.y+20, speed)
                         missileList.append(m)
-                        m = Missile(enx,eny,playerX,playerY, speed)
+                        m = Missile(enx,eny,player.x,player.y, speed)
                         missileList.append(m)
-                        m = Missile(enx,eny,playerX,playerY-20, speed)
+                        m = Missile(enx,eny,player.x,player.y-20, speed)
                         missileList.append(m)
-                        m = Missile(enx,eny,playerX,playerY+40, speed)
+                        m = Missile(enx,eny,player.x,player.y+40, speed)
                         missileList.append(m)
-                        m = Missile(enx,eny,playerX,playerY-40, speed)
+                        m = Missile(enx,eny,player.x,player.y-40, speed)
                         missileList.append(m)
                     else:
-                        missileList.append(Missile(enx,eny,playerX,playerY, speed))
+                        missileList.append(Missile(enx,eny,player.x,player.y, speed))
                 if enemyList[count].updateEnemyPos(enemyList, count):
                     HP = HP - 2
                     if HP < 0:
@@ -196,8 +192,9 @@ def main():
                     y = 0
                     if event.key == K_SPACE:
                         if player.Repel > 0:
+                            
                             player.Repel -= 1
-
+                        ShieldList.append(Shield(player.x, player.y))
                         #rep = pygame.image.load("pexpl1.png")
                         #windowSurfaceObj.blit(rep,rep.get_rect())
                         for i in range(0,len(missileList)):
@@ -223,9 +220,6 @@ def main():
                                 else:
                                     missileList[i].vector = Vector(1,0)
                             missileList[i].vel = 15
-                    if event.key == K_LCTRL:
-                        if player.DecoyNum > 0:
-                            player.Decoy(player.x,player.y)
 
                     if event.key == K_LEFT or event.key == K_a:
                         x = -10
@@ -275,7 +269,8 @@ def main():
                         gravityLimit = True
                     else:
                         gravityLimit = False
-
+            
+            
             #player.updateVector(mousex,mousey)
             #Castle health bar
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
@@ -426,8 +421,8 @@ def main():
                         message = "Multi Shot!"
                         textcounter = 120
                     elif PowerUpList[i].type == 2:
-                        player.Decoy += 1
-                        message = "Decoy!"
+                        player.ArrowsReplRate += .1
+                        message = "Rapid Fire!"
                         textcounter = 120
                     elif PowerUpList[i].type == 3:
                         if HP + 10 >= 100:
@@ -471,13 +466,18 @@ def main():
                     i = len(enemyList)
                 i = i - 1
 
-
+            
             windowSurfaceObj.blit(player.images[player.image],player.rect)
-            player.DecoyCounter -= 5
-            if player.DecoyCounter > 0:
-                windowSurfaceObj.blit(player.images[21],(player.DecoyX,player.DecoyY))
-
-
+            #DRAW SHIELD
+            count = len(ShieldList) - 1
+            while(count >= 0):
+                windowSurfaceObj.blit(ShieldList[count].images[ShieldList[count].image], ShieldList[count].rect)
+                ShieldList[count].x = player.x
+                ShieldList[count].y = player.y
+                
+                if(ShieldList[count].move(0,0)):
+                    ShieldList.pop(count)
+                count = count - 1
             #pygame.display.update()
             pygame.display.flip()
             fpsClock.tick(30)
@@ -573,12 +573,9 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     return retry
 
 #Enemy Function
-def enemyGenerator(enemyList, maxEnemies,points):
+def enemyGenerator(enemyList, maxEnemies):
     x = random.randint(0, 100)
-    tmp = points
-    if points < 75:
-        tmp = 75
-    if x < (2*tmp/75) and len(enemyList) < maxEnemies: # chance enemy will be generated
+    if x < 5 and len(enemyList) < maxEnemies: # 5% chance enemy will be generated
         x = random.randint(0,1)
         if x == 1:
             right = True
@@ -589,9 +586,8 @@ def enemyGenerator(enemyList, maxEnemies,points):
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             e = Enemyflying(right,speed)
-            if random.randint(0,20) < 2 * points/100:
+            if random.randint(0,20) < 2:
                 e.boss = True
-                e.speed = 8
             else:
                 e.boss = False
             enemyList.append(e)
@@ -613,7 +609,8 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-
+    menubg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
+    
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 110)
@@ -623,7 +620,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     menuType = 0
 
     while menu:
-        windowSurfaceObj.blit(desertBackground,(0,0))
+        windowSurfaceObj.blit(menubg,(0,0))
 
         #Top Menu
         if menuType == 0:
@@ -689,7 +686,7 @@ greenColor)
         #Story Menu
         elif menuType == 2:
             menuTitle = fontObj1.render("Story", False, blueColor)
-            textLine1 = fontObjT.render("Text goes here", False, blueColor)
+            textLine1 = fontObjT.render("It was 2139 when the meteors fell.  \nWilliam Wallace stood over his once great kingdom\nand marveled at what had happened\nIn 2140, the machines invaded.", False, blueColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
