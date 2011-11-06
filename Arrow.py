@@ -35,6 +35,19 @@ class Arrow(pygame.sprite.Sprite):
         diffY = mouseY - playerY
         if diffX != 0 and diffY!= 0:
             self.vector = Vector((diffX / sqrt(diffX*diffX + diffY*diffY)), (diffY / sqrt(diffX*diffX + diffY*diffY)))
+        else:
+            if diffX == 0:
+                if diffY < 0:
+                    self.vector = Vector(0,-1)
+                elif diffY > 0:
+                    self.vector = Vector(0,1)
+            elif diffY == 0:
+                if diffX < 0:
+                    self.vector = Vector(-1,0)
+                elif diffX > 0:
+                    self.vector = Vector(1,0)
+                else:
+                    self.vector = Vector(1,0)
         self.valid = True
         self.vel = 25
         if self.vector.x > 0:
