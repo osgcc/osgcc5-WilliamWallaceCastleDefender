@@ -17,24 +17,27 @@ def main():
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
-    pygame.key.set_repeat(1,50)
     ArrowList = []
-    
+
     #EXPLOSION
     exploList = []
 
     #Enemy variables
     maxEnemies = 25
     enemyList = []
-    
+
     #Castle HP
     HP = 100
     points = 0
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
+    pygame.key.set_repeat(1,50)
+    playing = True
+
     gravityLimit = False
+
     #Main Loop
-    while True:
+    while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
         windowSurfaceObj.blit(level,(0,0))
         mousex = player.x
@@ -51,6 +54,10 @@ def main():
                 HP = HP -5
                 if HP < 0:
                     HP = 0
+                if HP == 0:
+                    retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    playing = False
+
                 exploList.append(Explo(enx, eny))
             count = count - 1
 
@@ -61,8 +68,8 @@ def main():
             if(exploList[count].updateEnemyPos()):
                 exploList.pop(count)
             count = count - 1
-                
-            
+
+
         skipFall = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -84,6 +91,7 @@ def main():
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
                         player.Arrows -= 1
+
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -148,6 +156,11 @@ def main():
         fontObj = pygame.font.Font('freesansbold.ttf', 32)
         pointsSurfaceObj = fontObj.render("Points: " + str(points), False, pygame.Color(255,255,255))
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
+        #Display Arrows and gravity
+        arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
+        gravitySurfaceObj = fontObj.render("Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
+        windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
+        windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
         #player.updatePos()
         if not skipFall:
             player.fall()
@@ -155,7 +168,7 @@ def main():
         arrowGroup = pygame.sprite.Group()
         end = len(ArrowList)
         i = end - 1
-
+        print i
         while i >= 0:
             chk = ArrowList[i].updateArrowPos()
             if not chk:
@@ -167,6 +180,7 @@ def main():
                 chk = True
                 while count >= 0:
                     if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
+                        print "You broke it"
                         print "no"
                         print i
                         print len(ArrowList)-1
@@ -201,6 +215,77 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
+    if retry:
+        pygame.mixer.music.stop
+        main()
+    else:
+        pygame.quit()
+
+#Game Over Function
+def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
+    redColor = pygame.Color(255,0,0)
+    blueColor = pygame.Color(0,0,255)
+
+    headSurfaceObj = pygame.image.load('spritel1.png')
+    soundObjBounce = pygame.mixer.Sound("select.wav")
+    soundObjectSelect = pygame.mixer.Sound("click.wav")
+
+    fontObj = pygame.font.Font('freesansbold.ttf', 110)
+    fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
+    fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
+
+    menuTitle = fontObj.render("Game Over", False,redColor)
+    textObj = fontObj1.render("Congratulations, your high score was "+str(points), False,blueColor)
+
+    selection = 1
+    retry = False
+    notSelected = True
+
+    pygame.key.set_repeat(1,99999)
+    while(notSelected):
+        windowSurfaceObj.blit(desertBackground,(0,0))
+
+        if selection == 0:
+            selectObj1 = fontObj2.render("Retry", False,redColor)
+            selectObj2 = fontObj2.render("Quit", False,blueColor)
+            windowSurfaceObj.blit(headSurfaceObj, (175, 670-headSurfaceObj.get_rect().height/4))
+        else:
+            selectObj1 = fontObj2.render("Retry", False,blueColor)
+            selectObj2 = fontObj2.render("Quit", False,redColor)
+            windowSurfaceObj.blit(headSurfaceObj, (915, 670-headSurfaceObj.get_rect().height/4))
+
+        windowSurfaceObj.blit(menuTitle,((1280-menuTitle.get_rect().width)/2,50))
+        windowSurfaceObj.blit(textObj,((1280-textObj.get_rect().width)/2,250))
+        windowSurfaceObj.blit(selectObj1, ((1280-selectObj1.get_rect().width)/5*1,670))
+        windowSurfaceObj.blit(selectObj2, ((1280-selectObj2.get_rect().width)/5*4,670))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                #Arrow Keys
+                if event.key == K_UP or event.key == K_LEFT:
+                    soundObjBounce.play()
+                    selection = (selection - 1) % 2
+                if event.key == K_DOWN or event.key == K_RIGHT:
+                    soundObjBounce.play()
+                    selection = (selection - 1) % 2
+                #Enter Key
+                if event.key == K_RETURN:
+                    soundObjectSelect.play()
+                    notSelected = False
+                    if selection == 0:
+                        retry = True
+                    else:
+                        retry = False
+
+        pygame.display.update()
+        fpsClock.tick(30)
+    return retry
+
+
+
         #print player.Gravity
 
 #Enemy Function
@@ -212,7 +297,7 @@ def enemyGenerator(enemyList, maxEnemies):
             right = True
         else:
             right = False
-        speed = random.randint(1, 8)
+        speed = random.randint(1, 15)
         if random.randint(0, 100) < 33: # 33% chance enemy will be flying
             enemyList.append(Enemyflying(right, speed))
         else:
