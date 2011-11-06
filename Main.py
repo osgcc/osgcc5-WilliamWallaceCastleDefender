@@ -6,10 +6,10 @@ from Vector import *
 from Enemy import *
 from Enemyflying import *
 from Arrow import *
-
+from Explo import *
 
 def main():
-    menu = True
+    menu = False
     pygame.init()
     fpsClock = pygame.time.Clock()
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
@@ -18,6 +18,9 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
+    
+    #EXPLOSION
+    exploList = []
 
     #Enemy variables
     maxEnemies = 25
@@ -30,6 +33,9 @@ def main():
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     pygame.key.set_repeat(1,50)
     playing = True
+=======
+    gravityLimit = False
+>>>>>>> origin/master
     #Main Loop
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -42,6 +48,8 @@ def main():
         count = len(enemyList) - 1
         while(count >= 0):
             windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
+            enx = enemyList[count].x
+            eny = enemyList[count].y
             if enemyList[count].updateEnemyPos(enemyList, count):
                 HP = HP -5
                 if HP < 0:
@@ -49,8 +57,20 @@ def main():
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
+=======
+                exploList.append(Explo(enx, eny))
+>>>>>>> origin/master
             count = count - 1
 
+        #DRAW EXLPLOSIONS
+        count = len(exploList) - 1
+        while(count >= 0):
+            windowSurfaceObj.blit(exploList[count].images[exploList[count].image], exploList[count].rect)
+            if(exploList[count].updateEnemyPos()):
+                exploList.pop(count)
+            count = count - 1
+                
+            
         skipFall = False
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -59,11 +79,23 @@ def main():
             elif event.type == MOUSEMOTION:
                 mousex, mousey = event.pos
                 player.updateVector(mousex,mousey)
+            elif event.type == MOUSEBUTTONDOWN:
+                myx, myy = event.pos
+                if(myx < player.x):
+                    player.updatePlayerSprite(18,1)
+                else:
+                    player.updatePlayerSprite(19,1)
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
                     arrow = Arrow(player.x,player.y,mousex,mousey)
                     ArrowList.append(arrow)
+=======
+                    if player.Arrows - 1 >= 0:
+                        arrow = Arrow(player.x,player.y+24,mousex,mousey)
+                        ArrowList.append(arrow)
+                        player.Arrows -= 1
+>>>>>>> origin/master
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -86,8 +118,15 @@ def main():
                     x = -10
                 #player.updatePlayerPos(x,0)
                 if y != 0:
-                    player.jet()
-                    skipFall = True
+                    if player.Gravity - 2 >= 0 and gravityLimit:
+                        player.jet()
+                        skipFall = True
+                        player.Gravity -= 2
+                    else:
+                        if player.Gravity >= 20:
+                            gravityLimit = True
+                        else:
+                            gravityLimit = False
                 if event.key == K_ESCAPE:
                     pygame.event.post(pygame.event.Event(QUIT))
             #else:
@@ -103,8 +142,15 @@ def main():
         if(x != 0 or y != 0):
             player.updatePlayerPos(x,0)
         if y != 0:
-            player.jet()
-            skipFall = True
+            if player.Gravity - 1 >= 0 and gravityLimit:
+                player.jet()
+                skipFall = True
+                player.Gravity -= 2
+            else:
+                if player.Gravity >= 20:
+                    gravityLimit = True
+                else:
+                    gravityLimit = False
 
         #player.updateVector(mousex,mousey)
         #Castle health bar
@@ -137,17 +183,30 @@ def main():
                 count = end
                 chk = True
                 while count >= 0:
+                    if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
+<<<<<<< HEAD
+                        print "You broke it"
+=======
+                        print "no"
+>>>>>>> origin/master
+                        print i
+                        print len(ArrowList)-1
+                        print count
+                        print len(enemyList)-1
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
                         ArrowList.pop(i)
                         i = i - 1
-                        enemyList[count].Hit(enemyList,count,5)
+                        enx = enemyList[count].x
+                        eny = enemyList[count].y
+                        if(enemyList[count].Hit(enemyList,count,5)):
+                            exploList.append(Explo(enx, eny))
                         points = points + 5
                         chk = False
                     count -= 1
                 if chk:
                     ArrowObj = ArrowList[i].ArrowObj
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
-                i = i - 1
+            i = i - 1
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
@@ -222,6 +281,22 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
         fpsClock.tick(30)
     return retry
 
+=======
+        if player.Arrows + 1 <= 20:
+            player.ArrowsRepl += .05
+            if player.ArrowsRepl >= 1.0:
+                player.Arrows += 1
+                player.ArrowsRepl = 0.0
+        if player.Gravity + 1 <= 100:
+            player.GravityRepl += .25
+            if player.GravityRepl >= 1.0:
+                player.Gravity += 1
+                player.GravityRepl = 0.0
+<<<<<<< HEAD
+=======
+        #print player.Gravity
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
