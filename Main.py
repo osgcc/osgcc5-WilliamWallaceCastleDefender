@@ -4,6 +4,7 @@ from pygame.locals import *
 from Player import *
 from Vector import *
 from Enemy import *
+from Enemyflying import *
 
 
 def main():
@@ -108,7 +109,10 @@ def enemyGenerator(enemyList, maxEnemies):
         else:
             right = False
         speed = random.randint(1, 15)
-        enemyList.append(Enemy(right, speed))
+        if random.randint(0, 100) < 33: # 33% chance enemy will be flying
+            enemyList.append(Enemyflying(right, speed))
+        else:
+            enemyList.append(Enemy(right, speed))
 
 #Menu function
 def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
