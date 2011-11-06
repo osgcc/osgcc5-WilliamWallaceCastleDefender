@@ -14,14 +14,20 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = 0
-        self.images = [pygame.image.load(os.path.join(os.curdir, 'spritel1.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel2.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel3.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel4.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel5.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel6.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel7.png')).convert_alpha(),
-                      pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha()]
+        pygame.image.load(os.path.join(os.curdir, 'spritel5.png')).convert_alpha(),
+                       pygame.image.load(os.path.join(os.curdir, 'spritel6.png')).convert_alpha(),
+                       pygame.image.load(os.path.join(os.curdir, 'spritel7.png')).convert_alpha(),
+-                      pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha()]
++                      pygame.image.load(os.path.join(os.curdir, 'spritel8.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter1.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter2.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter3.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter4.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter5.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter6.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter7.png')).convert_alpha(),
++                      pygame.image.load(os.path.join(os.curdir, 'spriter8.png')).convert_alpha()
++                      ]
         self.rect = self.images[self.image].get_rect()
         self.rect = self.rect.move(300,600)
         self.vel = 10
