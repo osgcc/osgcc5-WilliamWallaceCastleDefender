@@ -7,7 +7,7 @@ from Enemy import *
 from Enemyflying import *
 from Arrow import *
 from Explo import *
-
+from PowerUp import *
 def main():
     menu = False
     pygame.init()
@@ -18,7 +18,7 @@ def main():
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
-
+    PowerUpList = []
     #EXPLOSION
     exploList = []
 
@@ -89,6 +89,10 @@ def main():
                     mousex, mousey = event.pos
                     if player.Arrows - 1 >= 0:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
+                        ArrowList.append(arrow)
+                        arrow = Arrow(player.x,player.y+24,mousex,mousey+30)
+                        ArrowList.append(arrow)
+                        arrow = Arrow(player.x,player.y+24,mousex,mousey-30)
                         ArrowList.append(arrow)
                         player.Arrows -= 1
 
@@ -187,6 +191,8 @@ def main():
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
+                            tmp = PowerUp(enx,eny)
+                            PowerUpList.append(tmp)
                         points = points + 5
                         chk = False
                     count -= 1
@@ -197,12 +203,31 @@ def main():
                     windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
             i = i - 1
 
+        i = len(PowerUpList) - 1
+        while i >= 0:
+            PowerUpList[i].updateBoxSprite()
+            if player.rect.colliderect(PowerUpList[i].rect):
+                if PowerUpList[i].type == 0:
+                    player.ArrowsMax += 10
+                elif PowerUpList[i].type == 1:
+                    player.MultiShot = True
+                elif PowerUpList[i].type == 2:
+                    player.RapidFire = True
+                PowerUpList.pop(i)
+            else:
+                windowSurfaceObj.blit(PowerUpList[i].images[PowerUpList[i].image], PowerUpList[i].rect)
+            i = i - 1
+
+
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
-        if player.Arrows + 1 <= 20:
-            player.ArrowsRepl += .05
+        if player.Arrows + 1 <= player.ArrowsMax:
+            if player.RapidFire:
+                player.ArrowsRepl += 1
+            else:
+                player.ArrowsRepl += .5
             if player.ArrowsRepl >= 1.0:
                 player.Arrows += 1
                 player.ArrowsRepl = 0.0

@@ -50,6 +50,8 @@ class Player(pygame.sprite.Sprite):
         self.ArrowsRepl = 0.0
         self.Gravity = 100
         self.GravityRepl = 0.0
+        self.RapidFire = False
+        self.MultiShot = False
 
     def updateVector(self,x,y):
 
