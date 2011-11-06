@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         self.MultiShot = False
         self.MultiShot2 = False
         self.Lives = 3
-        self.Repel = 3
+        self.Repel = 30
 
     def updateVector(self,x,y):
 

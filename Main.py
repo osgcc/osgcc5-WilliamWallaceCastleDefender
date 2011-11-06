@@ -71,7 +71,7 @@ def main():
                 #print message
                 textMessage = fontObj.render(str(message), False, pygame.Color(0,0,0))
                 windowSurfaceObj.blit(textMessage, ((1280-textMessage.get_rect().width)/2*1,670))
-                textcounter -= 1   
+                textcounter -= 1
         if(deathcounter > 0):
             player.updatePlayerSprite(20,1)
             deathcounter -= 1
@@ -89,8 +89,8 @@ def main():
             count = len(enemyList) - 1
             while(count >= 0):
                 windowSurfaceObj.blit(enemyList[count].images[enemyList[count].image], enemyList[count].rect)
-                
-    
+
+
                 enx = enemyList[count].x
                 eny = enemyList[count].y
                 chance = 1
@@ -135,11 +135,11 @@ def main():
                     if HP == 0:
                         retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                         playing = False
-    
+
                     exploList.append(Explo(enx, eny, False))
                 count = count - 1
-    
-    
+
+
             skipFall = False
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -157,7 +157,8 @@ def main():
                 elif event.type == MOUSEBUTTONUP:
                     if event.button in (1,2,3):
                         mousex, mousey = event.pos
-                        if player.Arrows - 1 >= 0:
+                        #if player.Arrows - 1 >= 0:
+                        if 1:
                             arrow = Arrow(player.x,player.y+24,mousex,mousey,player.gunmode)
                             ArrowList.append(arrow)
                             if player.MultiShot2:
@@ -175,8 +176,8 @@ def main():
                                 arrow = Arrow(player.x,player.y+24,mousex,mousey-30,player.gunmode)
                                 ArrowList.append(arrow)
                             soundObjectArrow.play()
-                            player.Arrows -= 1
-    
+                            #player.Arrows -= 1
+
                         #left, middle, right button
                     elif event.button in (4,5):
                         blah = "blah"
@@ -184,6 +185,35 @@ def main():
                 elif event.type == KEYDOWN:
                     x = 0
                     y = 0
+                    if event.key == K_SPACE:
+                        if player.Repel > 0:
+                            player.Repel -= 1
+                        rep = pygame.image.load("pexpl1.png")
+                        windowSurfaceObj.blit(rep,rep.get_rect())
+                        for i in range(0,len(missileList)):
+                            missXp = missileList[i].x
+                            missYp = missileList[i].y
+
+                            diffX = missileList[i].x - player.x
+                            diffY = missileList[i].y - player.y
+
+                            if diffX != 0 and diffY!= 0:
+                                missileList[i].vector = Vector((diffX / sqrt(diffX*diffX + diffY*diffY)), (diffY / sqrt(diffX*diffX + diffY*diffY)))
+                            else:
+                                if diffX == 0:
+                                    if diffY < 0:
+                                        missileList[i].vector = Vector(0,-1)
+                                    elif diffY > 0:
+                                        missileList[i].vector = Vector(0,1)
+                                elif diffY == 0:
+                                    if diffX < 0:
+                                        missileList[i].vector = Vector(-1,0)
+                                    elif diffX > 0:
+                                        missileList[i].vector = Vector(1,0)
+                                else:
+                                    missileList[i].vector = Vector(1,0)
+                            missileList[i].vel = 15
+
                     if event.key == K_LEFT or event.key == K_a:
                         x = -10
                     if event.key == K_RIGHT or event.key == K_d:
@@ -232,7 +262,7 @@ def main():
                         gravityLimit = True
                     else:
                         gravityLimit = False
-    
+
             #player.updateVector(mousex,mousey)
             #Castle health bar
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
@@ -248,15 +278,15 @@ def main():
             for i in range(0, player.Lives):
                 windowSurfaceObj.blit(SurfaceObjLife,(300+livesSurfaceObj.get_rect().width +(i*(SurfaceObjLife.get_rect().width+25)),25-SurfaceObjLife.get_rect().height/4))
             #Display Arrows and gravity
-            arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
-            gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
-    
-    
+            #arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
+            #gravitySurfaceObj = fontObj.render("Anti-Gravity: ", False, pygame.Color(255,255,255))
+
+
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,255,0), (20, 120, 200, 20))
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (20, 120, 40, 20))
             pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (20, 120, player.Gravity*2, 20))
-            windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
-            windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
+            #windowSurfaceObj.blit(arrowsSurfaceObj, (25, 25))
+            #windowSurfaceObj.blit(gravitySurfaceObj, (25, arrowsSurfaceObj.get_rect().height + 50))
             #player.updatePos()
             if not skipFall:
                 player.fall()
@@ -302,7 +332,7 @@ def main():
                         ArrowObj = ArrowList[i].ArrowObj
                         windowSurfaceObj.blit(ArrowObj, ArrowList[i].rect)
                 i = i - 1
-    
+
             #Bomb Code
             i = len(BombList) - 1
             while i >= 0:
@@ -325,12 +355,12 @@ def main():
                 else:
                     windowSurfaceObj.blit(BombList[i].image, BombList[i].rect)
                 i = i - 1
-    
-    
+
+
             #Missile Code
             end = len(missileList)
             i = end - 1
-    
+
             while i >= 0:
                 chk = missileList[i].updateMissilePos()
                 if not chk:
@@ -366,15 +396,15 @@ def main():
                     missileObj = missileList[i].missileObj
                     windowSurfaceObj.blit(missileObj, missileList[i].rect)
                 i = i - 1
-    
-    
+
+
             i = len(PowerUpList) - 1
             while i >= 0:
                 PowerUpList[i].updateBoxSprite()
                 if player.rect.colliderect(PowerUpList[i].rect):
                     if PowerUpList[i].type == 0:
-                        player.ArrowsMax += 10
-                        message = "Max Arrows!"
+                        player.Repel += 1
+                        message = "Repel!"
                         textcounter = 120
                     elif PowerUpList[i].type == 1:
                         if player.MultiShot:
@@ -427,17 +457,17 @@ def main():
                         player.gunmode = False
                     i = len(enemyList)
                 i = i - 1
-    
-    
+
+
             windowSurfaceObj.blit(player.images[player.image],player.rect)
             #pygame.display.update()
             pygame.display.flip()
             fpsClock.tick(30)
-            if player.Arrows + 1 <= player.ArrowsMax:
-                player.ArrowsRepl += player.ArrowsReplRate
-                if player.ArrowsRepl >= 1.0:
-                    player.Arrows += 1
-                    player.ArrowsRepl = 0.0
+            #if player.Arrows + 1 <= player.ArrowsMax:
+            #    player.ArrowsRepl += player.ArrowsReplRate
+             #   if player.ArrowsRepl >= 1.0:
+             #       player.Arrows += 1
+              #      player.ArrowsRepl = 0.0
             if player.Gravity + 1 <= 100:
                 player.GravityRepl += .5
                 if player.GravityRepl >= 1.0:
@@ -538,7 +568,7 @@ def enemyGenerator(enemyList, maxEnemies):
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             e = Enemyflying(right,speed)
-            if random.randint(0,20) < 1:
+            if random.randint(0,20) < 2:
                 e.boss = True
             else:
                 e.boss = False
