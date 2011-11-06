@@ -34,7 +34,6 @@ def main():
                 mousex, mousey = event.pos
                 player.updateVector(mousex,mousey)
             elif event.type == MOUSEBUTTONUP:
-                player.arrow()
                 if event.button in (1,2,3):
                     blah = "blah"
                     #left, middle, right button
