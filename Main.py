@@ -95,21 +95,21 @@ def main():
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
                     if player.Arrows - 1 >= 0:
-                        arrow = Arrow(player.x,player.y+24,mousex,mousey)
+                        arrow = Arrow(player.x,player.y+24,mousex,mousey,player.gunmode)
                         ArrowList.append(arrow)
                         if player.MultiShot2:
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey+20)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+20,player.gunmode)
                             ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey-20)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-20,player.gunmode)
                             ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey+40)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+40,player.gunmode)
                             ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey-40)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-40,player.gunmode)
                             ArrowList.append(arrow)
                         elif player.MultiShot:
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey+30)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey+30,player.gunmode)
                             ArrowList.append(arrow)
-                            arrow = Arrow(player.x,player.y+24,mousex,mousey-30)
+                            arrow = Arrow(player.x,player.y+24,mousex,mousey-30,player.gunmode)
                             ArrowList.append(arrow)
                         soundObjectArrow.play()
                         player.Arrows -= 1
@@ -210,14 +210,16 @@ def main():
                     tmp = ArrowList[i]
                     tmp = enemyList[count]
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
-                        ArrowList.pop(i)
-                        i = i - 1
+                        if(not player.gunmode):
+                            ArrowList.pop(i)
+                            i = i - 1
                         enx = enemyList[count].x
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
                             x = random.randint(0,100)
-                            if x <= 20:
+                            print x
+                            if x <= 90:
                                 tmp = PowerUp(enx,eny)
                                 PowerUpList.append(tmp)
                             soundObjectExplosion.play()
@@ -248,6 +250,9 @@ def main():
                         HP = 100
                     else:
                         HP += 10
+                elif PowerUpList[i].type == 4:
+                    player.gunmode = True
+                    #soundObjectArrow = pygame.mixer.Sound("laser.wav")
                 PowerUpList.pop(i)
             else:
                 windowSurfaceObj.blit(PowerUpList[i].images[PowerUpList[i].image], PowerUpList[i].rect)
