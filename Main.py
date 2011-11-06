@@ -1,8 +1,9 @@
 #Main
-import pygame, sys, os
+import pygame, sys, os, random
 from pygame.locals import *
 from Player import *
 from Vector import *
+from Enemy import *
 
 
 def main():
@@ -16,6 +17,10 @@ def main():
     player = Player()
     pygame.key.set_repeat(1,50)
 
+    #Enemy variables
+    maxEnemies = 10
+    enemyList = []
+
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     #Main Loop
@@ -24,6 +29,12 @@ def main():
         windowSurfaceObj.blit(level,(0,0))
         mousex = player.x
         mousey = player.y
+
+        #Enemy code
+        enemyGenerator(enemyList, maxEnemies)
+        for enemy in enemyList:
+            windowSurfaceObj.blit(enemy.images[enemy.image],enemy.rect)
+            enemy.updateEnemyPos()
 
         skipFall = False
         for event in pygame.event.get():
@@ -87,6 +98,17 @@ def main():
         pygame.display.flip()
         fpsClock.tick(30)
 
+#Enemy Function
+def enemyGenerator(enemyList, maxEnemies):
+    x = random.randint(0, 100)
+    if x < 2 and len(enemyList) < maxEnemies: # 2% chance enemy will be generated
+        x = random.randint(0,1)
+        if x == 1:
+            right = True
+        else:
+            right = False
+        speed = random.randint(1, 15)
+        enemyList.append(Enemy(right, speed))
 
 #Menu function
 def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
