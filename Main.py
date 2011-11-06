@@ -244,7 +244,7 @@ def main():
                         player.MultiShot2 = True
                     player.MultiShot = True
                 elif PowerUpList[i].type == 2:
-                    player.ArrowReplRate += .1
+                    player.ArrowsReplRate += .1
                 elif PowerUpList[i].type == 3:
                     if HP + 10 >= 100:
                         HP = 100
