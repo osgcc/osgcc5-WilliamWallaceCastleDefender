@@ -533,7 +533,11 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
+<<<<<<< HEAD
     menubkg = pygame.image.load(os.path.join(os.path.curdir, "braveheart.jpg")).convert_alpha()
+=======
+    menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
+>>>>>>> origin/master
     fontObj = pygame.font.Font('freesansbold.ttf', 110)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
