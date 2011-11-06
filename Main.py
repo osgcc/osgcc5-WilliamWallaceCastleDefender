@@ -70,13 +70,13 @@ def main():
                 HP = HP -5
                 if HP < 0:
                     HP = 0
-                exploList.append(Explo(enx, eny))
+                exploList.append(Explo(enx, eny, False))
                 soundObjectExplosion.play()
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
 
-                exploList.append(Explo(enx, eny))
+                exploList.append(Explo(enx, eny, False))
             count = count - 1
 
         #DRAW EXLPLOSIONS
@@ -222,7 +222,7 @@ def main():
                         enx = enemyList[count].x
                         eny = enemyList[count].y
                         if(enemyList[count].Hit(enemyList,count,5)):
-                            exploList.append(Explo(enx, eny))
+                            exploList.append(Explo(enx, eny, True))
                             x = random.randint(0,100)
                             print x
                             if x <= 90:
@@ -250,7 +250,7 @@ def main():
                 i = i - 1
             else:
                 if missileList[i].rect.colliderect(player.rect):
-                    exploList.append(Explo(missileList[i].x, missileList[i].y))
+                    exploList.append(Explo(missileList[i].x, missileList[i].y, True))
                     soundObjectExplosion.play()
                     missileList.pop(i)
                     player.Lives -= 1
@@ -294,7 +294,7 @@ def main():
         while i >= 0:
             if player.rect.colliderect(enemyList[i].rect):
                 player.Lives -= 1
-                exploList.append(Explo(enemyList[i].x, enemyList[i].y))
+                exploList.append(Explo(enemyList[i].x, enemyList[i].y, False))
                 enemyList.pop(i)
                 if player.Lives <= 0:
                     gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
