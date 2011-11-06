@@ -17,6 +17,7 @@ def main():
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
     pygame.display.set_caption("William Wallce Defender X-Treme 2140")
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
+    SurfaceObjLife = pygame.image.load("life.png")
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
     ArrowList = []
@@ -192,8 +193,10 @@ def main():
         windowSurfaceObj.blit(pointsSurfaceObj, (windowSurfaceObj.get_rect().width-pointsSurfaceObj.get_rect().width-25, 25))
         #Display Lives
         fontObj = pygame.font.Font('freesansbold.ttf', 32)
-        pointsSurfaceObj = fontObj.render("Lives: " + str(player.Lives), False, pygame.Color(255,255,255))
-        windowSurfaceObj.blit(pointsSurfaceObj,(300,25))
+        livesSurfaceObj = fontObj.render("Lives:", False, pygame.Color(255,255,255))
+        windowSurfaceObj.blit(livesSurfaceObj,(300,25))
+        for i in range(0, player.Lives):
+            windowSurfaceObj.blit(SurfaceObjLife,(300+livesSurfaceObj.get_rect().width +(i*(SurfaceObjLife.get_rect().width+25)),25-SurfaceObjLife.get_rect().height/4))
         #Display Arrows and gravity
         arrowsSurfaceObj = fontObj.render("Arrows: " + str(player.Arrows)+"/"+str(player.ArrowsMax), False, pygame.Color(255,255,255))
         gravitySurfaceObj = fontObj.render("Anti-Gravity: " + str(player.Gravity)+"%", False, pygame.Color(255,255,255))
@@ -255,7 +258,8 @@ def main():
                     missileList.pop(i)
                     player.Lives -= 1
                     if player.Lives <= 0:
-                        gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                        retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                        playing = False
                     chk = False
                 if i<0:
                     count = -1
@@ -295,9 +299,11 @@ def main():
             if player.rect.colliderect(enemyList[i].rect):
                 player.Lives -= 1
                 exploList.append(Explo(enemyList[i].x, enemyList[i].y))
+                soundObjectExplosion.play()
                 enemyList.pop(i)
                 if player.Lives <= 0:
-                    gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    playing = False
                 else:
                     player.ArrowsMax = 20
                     player.ArrowsReplRate = 0.05
@@ -389,11 +395,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 
         pygame.display.update()
         fpsClock.tick(30)
-    if retry:
-        main()
-    else:
-        pygame.quit()
-    #return retry
+    return retry
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
