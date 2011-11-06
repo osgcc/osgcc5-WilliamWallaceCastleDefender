@@ -10,6 +10,7 @@ from Explo import *
 from Missile import *
 from Bomb import *
 from PowerUp import *
+from Shield import *
 
 def main():
     menu = True
@@ -26,6 +27,7 @@ def main():
     player = Player()
     ArrowList = []
     missileList = []
+    ShieldList = []
 
     BombList = []
     PowerUpList = []
@@ -190,8 +192,9 @@ def main():
                     y = 0
                     if event.key == K_SPACE:
                         if player.Repel > 0:
+                            
                             player.Repel -= 1
-
+                        ShieldList.append(Shield(player.x, player.y))
                         #rep = pygame.image.load("pexpl1.png")
                         #windowSurfaceObj.blit(rep,rep.get_rect())
                         for i in range(0,len(missileList)):
@@ -266,7 +269,8 @@ def main():
                         gravityLimit = True
                     else:
                         gravityLimit = False
-
+            
+            
             #player.updateVector(mousex,mousey)
             #Castle health bar
             pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
@@ -462,8 +466,18 @@ def main():
                     i = len(enemyList)
                 i = i - 1
 
-
+            
             windowSurfaceObj.blit(player.images[player.image],player.rect)
+            #DRAW SHIELD
+            count = len(ShieldList) - 1
+            while(count >= 0):
+                windowSurfaceObj.blit(ShieldList[count].images[ShieldList[count].image], ShieldList[count].rect)
+                ShieldList[count].x = player.x
+                ShieldList[count].y = player.y
+                
+                if(ShieldList[count].move(0,0)):
+                    ShieldList.pop(count)
+                count = count - 1
             #pygame.display.update()
             pygame.display.flip()
             fpsClock.tick(30)
