@@ -630,7 +630,6 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-<<<<<<< HEAD
     menubg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
     shift = pygame.image.load(os.path.join(os.path.curdir, 'shift.png')).convert_alpha()
     arrowkeys = pygame.image.load(os.path.join(os.path.curdir, 'arrowkeys.png')).convert_alpha()
@@ -643,9 +642,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     shift = pygame.transform.scale(shift,(tmp.width/6,tmp.height/6))
     tmp = space.get_rect()
     space = pygame.transform.scale(space,(tmp.width/7,tmp.height/7))
-=======
     menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
->>>>>>> origin/master
 
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
@@ -737,14 +734,11 @@ greenColor)
         #Story Menu
         elif menuType == 2:
             menuTitle = fontObj1.render("Story", False, blueColor)
-<<<<<<< HEAD
             textLine1 = fontObjT.render("It was 2139 when the meteors fell. ",False, greenColor)
             textLine2 = fontObjT.render("Sir William Wallace stood over his once great kingdom",False, greenColor)
             textLine3 = fontObjT.render("and marveled at what had happened", False, greenColor)
             textLine4 = fontObjT.render("In 2140, the machines invaded...", False, greenColor)
-=======
             textLine1 = fontObjT.render("Text goes here", False, blueColor)
->>>>>>> origin/master
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
