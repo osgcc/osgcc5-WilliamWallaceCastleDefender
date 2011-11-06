@@ -26,7 +26,7 @@ def direction(x, y):
 class Missile(pygame.sprite.Sprite):
     def __init__(self,enemyX,enemyY,playerX,playerY,speed):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(os.curdir, 'missile.png')).convert_alpha()
+        self.image = pygame.image.load(os.path.join(os.curdir, 'laser.png')).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect = self.rect.move(enemyX,enemyY)
         self.x = enemyX
