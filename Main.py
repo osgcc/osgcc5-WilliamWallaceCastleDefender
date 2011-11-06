@@ -33,9 +33,9 @@ def main():
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     pygame.key.set_repeat(1,50)
     playing = True
-=======
+
     gravityLimit = False
->>>>>>> origin/master
+
     #Main Loop
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
@@ -57,7 +57,7 @@ def main():
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
-=======
+
                 exploList.append(Explo(enx, eny))
             count = count - 1
 
@@ -87,14 +87,11 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
-                    arrow = Arrow(player.x,player.y,mousex,mousey)
-                    ArrowList.append(arrow)
-=======
                     if player.Arrows - 1 >= 0:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
                         player.Arrows -= 1
->>>>>>> origin/master
+
                     #left, middle, right button
                 elif event.button in (4,5):
                     blah = "blah"
@@ -171,7 +168,7 @@ def main():
         arrowGroup = pygame.sprite.Group()
         end = len(ArrowList)
         i = end - 1
-
+        print i
         while i >= 0:
             chk = ArrowList[i].updateArrowPos()
             if not chk:
@@ -208,6 +205,16 @@ def main():
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
+        if player.Arrows + 1 <= 20:
+            player.ArrowsRepl += .05
+            if player.ArrowsRepl >= 1.0:
+                player.Arrows += 1
+                player.ArrowsRepl = 0.0
+        if player.Gravity + 1 <= 100:
+            player.GravityRepl += .25
+            if player.GravityRepl >= 1.0:
+                player.Gravity += 1
+                player.GravityRepl = 0.0
     if retry:
         pygame.mixer.music.stop
         main()
@@ -277,26 +284,9 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
         fpsClock.tick(30)
     return retry
 
-=======
-        if player.Arrows + 1 <= 20:
-            player.ArrowsRepl += .05
-            if player.ArrowsRepl >= 1.0:
-                player.Arrows += 1
-                player.ArrowsRepl = 0.0
-        if player.Gravity + 1 <= 100:
-            player.GravityRepl += .25
-            if player.GravityRepl >= 1.0:
-                player.Gravity += 1
-                player.GravityRepl = 0.0
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
+
         #print player.Gravity
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):

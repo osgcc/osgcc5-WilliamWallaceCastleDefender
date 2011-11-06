@@ -61,7 +61,7 @@ class Arrow(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.vector.x * self.vel, self.vector.y * self.vel)
         if self.x > 1280 or self.x < 0 or self.y > 720 or self.y < 0:
             self.valid = False
-            return -1
+            return False
         else:
-            return 1
+            return True
 
