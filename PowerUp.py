@@ -18,7 +18,9 @@ class PowerUp(pygame.sprite.Sprite):
         self.y = y
         self.rect = self.rect.move(x,y)
         x = random.randint(0,100)
-        if x < 30:
+        if x < 20:
+            self.type = 4
+        elif x < 40:
             self.type = 0
         elif x < 70:
             self.type = 3
@@ -30,6 +32,7 @@ class PowerUp(pygame.sprite.Sprite):
         #1 = Multi Shot 3 Arrows
         #2 = Rapid Fire (Infinite Arrows)
         #3 = Heal Castle
+        #4 = Piercing rounds
 
     def updateBoxSprite(self):
         self.framenumber += 0.33
