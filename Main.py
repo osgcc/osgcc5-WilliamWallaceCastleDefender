@@ -47,6 +47,7 @@ def main():
 
     gravityLimit = False
     #Main Loop
+    LifeUp = 1
     while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
         windowSurfaceObj.blit(level,(0,0))
@@ -224,12 +225,15 @@ def main():
                         if(enemyList[count].Hit(enemyList,count,5)):
                             exploList.append(Explo(enx, eny))
                             x = random.randint(0,100)
-                            print x
+                            #print x
                             if x <= 90:
                                 tmp = PowerUp(enx,eny)
                                 PowerUpList.append(tmp)
                             soundObjectExplosion.play()
                         points = points + 5
+                        if points / LifeUp >= 100:
+                            LifeUp += 1
+                            player.Lives += 1
                         chk = False
                     count -= 1
                     if i < 0:
@@ -242,7 +246,7 @@ def main():
         #Missile Code
         end = len(missileList)
         i = end - 1
-        print str(i)+" "+str(len(missileList))
+        #print str(i)+" "+str(len(missileList))
         while i >= 0:
             chk = missileList[i].updateMissilePos()
             if not chk:
@@ -256,6 +260,13 @@ def main():
                     player.Lives -= 1
                     if player.Lives <= 0:
                         gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    else:
+                        player.ArrowsMax = 20
+                        player.ArrowsReplRate = 0.05
+                        player.RapidFire = False
+                        player.MultiShot = False
+                        player.MultiShot2 = False
+                        player.gunmode = False
                     chk = False
                 if i<0:
                     count = -1
@@ -304,8 +315,10 @@ def main():
                     player.RapidFire = False
                     player.MultiShot = False
                     player.MultiShot2 = False
+                    player.gunmode = False
                 i = len(enemyList)
             i = i - 1
+
 
         windowSurfaceObj.blit(player.images[player.image],player.rect)
         #pygame.display.update()
