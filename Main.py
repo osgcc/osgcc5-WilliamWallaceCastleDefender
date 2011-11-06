@@ -9,7 +9,7 @@ from Arrow import *
 
 
 def main():
-    menu = False
+    menu = True
     pygame.init()
     fpsClock = pygame.time.Clock()
     windowSurfaceObj = pygame.display.set_mode((1280,720), DOUBLEBUF)
@@ -17,7 +17,6 @@ def main():
     desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
-    pygame.key.set_repeat(1,50)
     ArrowList = []
 
     #Enemy variables
@@ -29,9 +28,10 @@ def main():
     points = 0
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
-    Playing = True
+    pygame.key.set_repeat(1,50)
+    playing = True
     #Main Loop
-    while Playing:
+    while playing:
         windowSurfaceObj.blit(desertBackground,(0,0))
         windowSurfaceObj.blit(level,(0,0))
         mousex = player.x
@@ -47,7 +47,8 @@ def main():
                 if HP < 0:
                     HP = 0
                 if HP == 0:
-                    gameOver(Playing)
+                    retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
+                    playing = False
             count = count - 1
 
         skipFall = False
@@ -152,10 +153,74 @@ def main():
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
+    if retry:
+        pygame.mixer.music.stop
+        main()
+    else:
+        pygame.quit()
 
 #Game Over Function
-def gameOver(Playing):
-    print "me"
+def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
+    redColor = pygame.Color(255,0,0)
+    blueColor = pygame.Color(0,0,255)
+
+    headSurfaceObj = pygame.image.load('spritel1.png')
+    soundObjBounce = pygame.mixer.Sound("select.wav")
+    soundObjectSelect = pygame.mixer.Sound("click.wav")
+
+    fontObj = pygame.font.Font('freesansbold.ttf', 110)
+    fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
+    fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
+
+    menuTitle = fontObj.render("Game Over", False,redColor)
+    textObj = fontObj1.render("Congratulations, your high score was "+str(points), False,blueColor)
+
+    selection = 1
+    retry = False
+    notSelected = True
+
+    pygame.key.set_repeat(1,99999)
+    while(notSelected):
+        windowSurfaceObj.blit(desertBackground,(0,0))
+
+        if selection == 0:
+            selectObj1 = fontObj2.render("Retry", False,redColor)
+            selectObj2 = fontObj2.render("Quit", False,blueColor)
+            windowSurfaceObj.blit(headSurfaceObj, (175, 670-headSurfaceObj.get_rect().height/4))
+        else:
+            selectObj1 = fontObj2.render("Retry", False,blueColor)
+            selectObj2 = fontObj2.render("Quit", False,redColor)
+            windowSurfaceObj.blit(headSurfaceObj, (915, 670-headSurfaceObj.get_rect().height/4))
+
+        windowSurfaceObj.blit(menuTitle,((1280-menuTitle.get_rect().width)/2,50))
+        windowSurfaceObj.blit(textObj,((1280-textObj.get_rect().width)/2,250))
+        windowSurfaceObj.blit(selectObj1, ((1280-selectObj1.get_rect().width)/5*1,670))
+        windowSurfaceObj.blit(selectObj2, ((1280-selectObj2.get_rect().width)/5*4,670))
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == KEYDOWN:
+                #Arrow Keys
+                if event.key == K_UP or event.key == K_LEFT:
+                    soundObjBounce.play()
+                    selection = (selection - 1) % 2
+                if event.key == K_DOWN or event.key == K_RIGHT:
+                    soundObjBounce.play()
+                    selection = (selection - 1) % 2
+                #Enter Key
+                if event.key == K_RETURN:
+                    soundObjectSelect.play()
+                    notSelected = False
+                    if selection == 0:
+                        retry = True
+                    else:
+                        retry = False
+
+        pygame.display.update()
+        fpsClock.tick(30)
+    return retry
 
 
 #Enemy Function
