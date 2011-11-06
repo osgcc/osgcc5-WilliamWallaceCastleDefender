@@ -151,6 +151,12 @@ def main():
                 count = end
                 chk = True
                 while count >= 0:
+                    if i > (len(ArrowList)-1) or count > (len(enemyList)-1):
+                        print "You broke it"
+                        print i
+                        print len(ArrowList)-1
+                        print count
+                        print len(enemyList)-1
                     if ArrowList[i].rect.colliderect(enemyList[count].rect):
                         ArrowList.pop(i)
                         i = i - 1
@@ -177,7 +183,6 @@ def main():
             if player.GravityRepl >= 1.0:
                 player.Gravity += 1
                 player.GravityRepl = 0.0
-        print player.Gravity
 
 #Enemy Function
 def enemyGenerator(enemyList, maxEnemies):
