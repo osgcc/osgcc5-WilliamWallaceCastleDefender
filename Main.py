@@ -38,7 +38,7 @@ def main():
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
     soundObjectArrow = pygame.mixer.Sound("arrow.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
-    pygame.mixer.music.play(-1)
+    #pygame.mixer.music.play(-1)
 
     gravityLimit = False
     #Main Loop
