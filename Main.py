@@ -36,6 +36,7 @@ def main():
     gravityLimit = False
 
     soundObjectExplosion = pygame.mixer.Sound("explosion.wav")
+    soundObjectArrow = pygame.mixer.Sound("arrow.wav")
     pygame.mixer.music.load("BackgroundMusic.mp3")
     pygame.mixer.music.play(-1)
 
@@ -58,11 +59,11 @@ def main():
                 HP = HP -5
                 if HP < 0:
                     HP = 0
+                exploList.append(Explo(enx, eny))
+                soundObjectExplosion.play()
                 if HP == 0:
                     retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
                     playing = False
-                exploList.append(Explo(enx, eny))
-                soundObjectExplosion.play()
 
                 exploList.append(Explo(enx, eny))
             count = count - 1
@@ -96,6 +97,7 @@ def main():
                     if player.Arrows - 1 >= 0:
                         arrow = Arrow(player.x,player.y+24,mousex,mousey)
                         ArrowList.append(arrow)
+                        soundObjectArrow.play()
                         player.Arrows -= 1
 
                     #left, middle, right button
