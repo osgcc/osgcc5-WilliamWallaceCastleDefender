@@ -46,6 +46,9 @@ class Player(pygame.sprite.Sprite):
         self.y = 600
         self.dir = 1 # 1: Right -1: Left
         self.vector = Vector(self.x,self.y)
+        self.Arrows = 20
+        self.ArrowsMax = 20
+        self.Gravity = 100
 
     def updateVector(self,x,y):
 
@@ -82,7 +85,7 @@ class Player(pygame.sprite.Sprite):
         if(self.framenumber > framestart + totalframes or self.framenumber < framestart):
             self.framenumber = framestart
         self.image = (int(self.framenumber)) % totalframes + framestart
-        
+
     def updateArrowPos(self):
         self.x += self.vector.x * self.vel
         self.y += self.vector.y * self.vel
@@ -102,8 +105,6 @@ class Player(pygame.sprite.Sprite):
         self.updatePlayerPos(0,-self.vel)
 
 
-    def arrow(self):
-        print "hi"
 
 
 
