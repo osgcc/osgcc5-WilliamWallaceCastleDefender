@@ -91,7 +91,7 @@ class Player(pygame.sprite.Sprite):
             self.updatePlayerSprite(8,8)
 
     def updatePlayerSprite(self, framestart, totalframes):
-        self.framenumber += 0.5
+        self.framenumber += 0.33
         if(self.framenumber > framestart + totalframes or self.framenumber < framestart):
             self.framenumber = framestart
         self.image = (int(self.framenumber)) % totalframes + framestart
