@@ -705,11 +705,22 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
     menubg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
+    shift = pygame.image.load(os.path.join(os.path.curdir, 'shift.png')).convert_alpha()
+    arrowkeys = pygame.image.load(os.path.join(os.path.curdir, 'arrowkeys.png')).convert_alpha()
+    wasd = pygame.image.load(os.path.join(os.path.curdir, 'wasd.png')).convert_alpha()
+    space = pygame.image.load(os.path.join(os.path.curdir, 'space.png')).convert_alpha()
+
+    tmp = arrowkeys.get_rect()
+    wasd = pygame.transform.scale(wasd,(tmp.width,tmp.height))
+    tmp = shift.get_rect()
+    shift = pygame.transform.scale(shift,(tmp.width/6,tmp.height/6))
+    tmp = space.get_rect()
+    space = pygame.transform.scale(space,(tmp.width/7,tmp.height/7))
 
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 110)
-    fontObjT = pygame.font.Font('freesansbold.ttf', 18)
+    fontObjT = pygame.font.Font('freesansbold.ttf', 22)
 
     selection = 1
     menuType = 0
@@ -767,7 +778,11 @@ greenColor)
         #How to play menu
         elif menuType == 1:
             menuTitle = fontObj1.render("How to Play", False, blueColor)
-            textLine1 = fontObjT.render("Text goes here", False, blueColor)
+            textLine1 = fontObjT.render("Use for Movement", False, blueColor)
+            textLine2 = fontObjT.render("Press Up to Use Anti-Gravity Boots", False, blueColor)
+            textLine3 = fontObjT.render("Press For Decoy (3 to use)", False, blueColor)
+            textLine4 = fontObjT.render("Press to Repel Enemy Fire (3 to use)", False, blueColor)
+            textLine5 = fontObjT.render("Defend the castle, you will find powerups on the way", False, blueColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
@@ -786,7 +801,18 @@ greenColor)
             windowSurfaceObj.blit(menuTitle,
 ((1280-menuTitle.get_rect().width)/2,250))
             windowSurfaceObj.blit(textLine1,
-((1280-textLine1.get_rect().width)/2,350))
+((1280-textLine1.get_rect().width)/2+50,325))
+            windowSurfaceObj.blit(textLine2,
+((1280-textLine2.get_rect().width)/2+50,375))
+            windowSurfaceObj.blit(textLine3,
+((1280-textLine3.get_rect().width)/2-150,500))
+            windowSurfaceObj.blit(textLine4,(750,575))
+            windowSurfaceObj.blit(textLine5,
+((1280-textLine5.get_rect().width)/2,625))
+            windowSurfaceObj.blit(arrowkeys,(75,300))
+            windowSurfaceObj.blit(wasd,(300,300))
+            windowSurfaceObj.blit(shift,(75,475))
+            windowSurfaceObj.blit(space,(700,475))
             windowSurfaceObj.blit(menuObjOne,
 ((1280-menuObjOne.get_rect().width)/5*1,670))
             windowSurfaceObj.blit(menuObjTwo,
@@ -794,7 +820,10 @@ greenColor)
         #Story Menu
         elif menuType == 2:
             menuTitle = fontObj1.render("Story", False, blueColor)
-            textLine1 = fontObjT.render("It was 2139 when the meteors fell.  "+"\n" +"William Wallace stood over his once great kingdom\nand marveled at what had happened\nIn 2140, the machines invaded.", False, blueColor)
+            textLine1 = fontObjT.render("It was 2139 when the meteors fell. ",False, greenColor)
+            textLine2 = fontObjT.render("Sir William Wallace stood over his once great kingdom",False, greenColor)
+            textLine3 = fontObjT.render("and marveled at what had happened", False, greenColor)
+            textLine4 = fontObjT.render("In 2140, the machines invaded...", False, greenColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
@@ -814,6 +843,12 @@ greenColor)
 ((1280-menuTitle.get_rect().width)/2,250))
             windowSurfaceObj.blit(textLine1,
 ((1280-textLine1.get_rect().width)/2,350))
+            windowSurfaceObj.blit(textLine2,
+((1280-textLine2.get_rect().width)/2,380))
+            windowSurfaceObj.blit(textLine3,
+((1280-textLine3.get_rect().width)/2,410))
+            windowSurfaceObj.blit(textLine4,
+((1280-textLine4.get_rect().width)/2,440))
             windowSurfaceObj.blit(menuObjOne,
 ((1280-menuObjOne.get_rect().width)/5*1,670))
             windowSurfaceObj.blit(menuObjTwo,
