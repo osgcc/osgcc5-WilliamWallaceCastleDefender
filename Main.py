@@ -58,7 +58,7 @@ def main():
             elif event.type == MOUSEBUTTONUP:
                 if event.button in (1,2,3):
                     mousex, mousey = event.pos
-                    arrow = Arrow(player.x,player.y,mousex,mousey)
+                    arrow = Arrow(player.x,player.y+24,mousex,mousey)
                     ArrowList.append(arrow)
                     #left, middle, right button
                 elif event.button in (4,5):
@@ -154,7 +154,7 @@ def enemyGenerator(enemyList, maxEnemies):
             right = True
         else:
             right = False
-        speed = random.randint(1, 15)
+        speed = random.randint(1, 8)
         if random.randint(0, 100) < 33: # 33% chance enemy will be flying
             enemyList.append(Enemyflying(right, speed))
         else:
