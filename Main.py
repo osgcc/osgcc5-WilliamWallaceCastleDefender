@@ -19,9 +19,11 @@ def main():
     pygame.key.set_repeat(1,50)
 
     #Enemy variables
-    maxEnemies = 10
+    maxEnemies = 25
     enemyList = []
 
+    #Castle HP
+    HP = 100
     if menu == True:
         Menu(menu, windowSurfaceObj, fpsClock, desertBackground)
     #Main Loop
@@ -95,6 +97,9 @@ def main():
         if not skipFall:
             player.fall()
         windowSurfaceObj.blit(player.images[player.image],player.rect)
+        #Castle health bar
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(255,0,0), (540, 260, 200, 20))
+        pygame.draw.rect(windowSurfaceObj, pygame.Color(0,255,0), (540, 260, HP * 2, 20))
         #pygame.display.update()
         pygame.display.flip()
         fpsClock.tick(30)
