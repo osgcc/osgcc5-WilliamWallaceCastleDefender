@@ -73,13 +73,16 @@ def main():
                 windowSurfaceObj.blit(textMessage, ((1280-textMessage.get_rect().width)/2*1,670))
                 textcounter -= 1
         if(deathcounter > 0):
-            player.updatePlayerSprite(20,1)
+            if(player.Lives <= 0):
+                player.fall()
+                player.updatePlayerSprite(21,1)
+            else:
+                player.updatePlayerSprite(20,1)
             deathcounter -= 1
             windowSurfaceObj.blit(player.images[player.image],player.rect)
             pygame.display.flip()
             fpsClock.tick(30)
-            if(player.Lives <= 0):
-                player.fall()
+            
         else:
             if(player.Lives <= 0):
                 retry = gameOver(points, windowSurfaceObj,fpsClock, desertBackground)
@@ -338,7 +341,7 @@ def main():
             while i >= 0:
                 if BombList[i].rect.colliderect(player.rect):
                     killAllEnemies(enemyList, exploList, soundObjectExplosion)
-                    deathcounter=45
+                    #deathcounter=45
                     points = points + 30
                     if points / LifeUp >= 100:
                         LifeUp += 1
