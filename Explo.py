@@ -21,14 +21,15 @@ class Explo(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.x, self.y)
 
     def updateEnemySprite(self, framestart, totalframes):
-        self.framenumber += 0.33
+        self.framenumber += 0.5
+        if self.framenumber > 5:
+            return True
         if(self.framenumber > framestart + totalframes or self.framenumber < framestart):
             self.framenumber = framestart
         self.image = (int(self.framenumber)) % totalframes + framestart
 
     def updateEnemyPos(self):
-        self.updateEnemySprite(0,5)
-        return False
+        return self.updateEnemySprite(0,5)
 
     def Hit(self, enemyList, index, dmg):
         self.HP = self.HP - dmg
