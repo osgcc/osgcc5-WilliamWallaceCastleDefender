@@ -203,29 +203,29 @@ def main():
 
                         #rep = pygame.image.load("pexpl1.png")
                         #windowSurfaceObj.blit(rep,rep.get_rect())
-                        for i in range(0,len(missileList)):
-                            missXp = missileList[i].x
-                            missYp = missileList[i].y
-
-                            diffX = missileList[i].x - player.x
-                            diffY = missileList[i].y - player.y
-
-                            if diffX != 0 and diffY!= 0:
-                                missileList[i].vector = Vector((diffX / sqrt(diffX*diffX + diffY*diffY)), (diffY / sqrt(diffX*diffX + diffY*diffY)))
-                            else:
-                                if diffX == 0:
-                                    if diffY < 0:
-                                        missileList[i].vector = Vector(0,-1)
-                                    elif diffY > 0:
-                                        missileList[i].vector = Vector(0,1)
-                                elif diffY == 0:
-                                    if diffX < 0:
-                                        missileList[i].vector = Vector(-1,0)
-                                    elif diffX > 0:
-                                        missileList[i].vector = Vector(1,0)
+                            for i in range(0,len(missileList)):
+                                missXp = missileList[i].x
+                                missYp = missileList[i].y
+    
+                                diffX = missileList[i].x - player.x
+                                diffY = missileList[i].y - player.y
+    
+                                if diffX != 0 and diffY!= 0:
+                                    missileList[i].vector = Vector((diffX / sqrt(diffX*diffX + diffY*diffY)), (diffY / sqrt(diffX*diffX + diffY*diffY)))
                                 else:
-                                    missileList[i].vector = Vector(1,0)
-                            missileList[i].vel = 15
+                                    if diffX == 0:
+                                        if diffY < 0:
+                                            missileList[i].vector = Vector(0,-1)
+                                        elif diffY > 0:
+                                            missileList[i].vector = Vector(0,1)
+                                    elif diffY == 0:
+                                        if diffX < 0:
+                                            missileList[i].vector = Vector(-1,0)
+                                        elif diffX > 0:
+                                            missileList[i].vector = Vector(1,0)
+                                    else:
+                                        missileList[i].vector = Vector(1,0)
+                                missileList[i].vel = 15
                     if event.key == K_LCTRL:
                         if player.DecoyNum > 0:
                             player.Decoy(player.x,player.y)
@@ -444,7 +444,7 @@ def main():
                         player.gunmode = True
                         message = "Piercing bullets!"
                         textcounter = 120
-                        #soundObjectArrow = pygame.mixer.Sound("laser.wav")
+                        soundObjectArrow = pygame.mixer.Sound("gun.wav")
                     PowerUpList.pop(i)
                 else:
                     windowSurfaceObj.blit(PowerUpList[i].images[PowerUpList[i].image], PowerUpList[i].rect)
@@ -531,7 +531,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
-
+    menubkg = pygame.image.load(os.path.join(os.path.curdir, braveheart.jpg)).convert_alpha()
     fontObj = pygame.font.Font('freesansbold.ttf', 110)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
     fontObj2 = pygame.font.Font('freesansbold.ttf', 32)
@@ -545,7 +545,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
 
     pygame.key.set_repeat(1,99999)
     while(notSelected):
-        windowSurfaceObj.blit(desertBackground,(0,0))
+        windowSurfaceObj.blit(menubkg,(0,0))
 
         if selection == 0:
             selectObj1 = fontObj2.render("Retry", False,redColor)
@@ -627,6 +627,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjStart = pygame.mixer.Sound("start.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
+    menubkg = pygame.image.load(os.path.join(os.path.curdir, 'braveheart.jpg')).convert_alpha()
 
     fontObj = pygame.font.Font('freesansbold.ttf', 32)
     fontObj1 = pygame.font.Font('freesansbold.ttf', 40)
@@ -637,7 +638,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     menuType = 0
 
     while menu:
-        windowSurfaceObj.blit(desertBackground,(0,0))
+        windowSurfaceObj.blit(menubkg,(0,0))
 
         #Top Menu
         if menuType == 0:
