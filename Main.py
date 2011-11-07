@@ -26,7 +26,7 @@ def main():
     soundDecoy = pygame.mixer.Sound('decoy.wav')
     soundPwp = pygame.mixer.Sound('powerup.wav')
     soundShld = pygame.mixer.Sound('zap2.wav')
-    desertBackground = pygame.image.load(os.path.join(os.curdir, 'braveheart.jpg')).convert_alpha()
+    desertBackground = pygame.image.load(os.path.join(os.curdir, 'desert-background.jpg')).convert_alpha()
     SurfaceObjLife = pygame.image.load("life.png")
     level = pygame.image.load(os.path.join(os.curdir, 'LEVEL.png')).convert_alpha()
     player = Player()
@@ -536,7 +536,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
     blueColor = pygame.Color(0,0,255)
     greenColor = pygame.Color(0,255,0)
 
-    headSurfaceObj = pygame.image.load('spritel1.png')
+    headSurfaceObj = pygame.image.load('dead.png')
     soundObjBounce = pygame.mixer.Sound("select.wav")
     soundObjectSelect = pygame.mixer.Sound("click.wav")
 
@@ -751,7 +751,7 @@ def Menu(menu, windowSurfaceObj, fpsClock, desertBackground):
     menuType = 0
 
     while menu:
-        windowSurfaceObj.blit(desertBackground,(0,0))
+        windowSurfaceObj.blit(menubkg,(0,0))
 
         #Top Menu
         if menuType == 0:
@@ -849,7 +849,6 @@ greenColor)
             textLine2 = fontObjT.render("Sir William Wallace stood over his once great kingdom",False, greenColor)
             textLine3 = fontObjT.render("and marveled at what had happened", False, greenColor)
             textLine4 = fontObjT.render("In 2140, the machines invaded...", False, greenColor)
-            textLine1 = fontObjT.render("Text goes here", False, blueColor)
             if selection == 0:
                 menuObjOne = fontObj.render("Play Game", False, redColor)
                 menuObjTwo = fontObj.render("Back to Main Menu", False, blueColor)
