@@ -58,7 +58,7 @@ class Player(pygame.sprite.Sprite):
         self.MultiShot = False
         self.MultiShot2 = False
         self.Lives = 5
-        self.Repel = 5
+        self.Repel = 8
         self.DecoyNum = 5
         self.DecoyCounter = 0
         self.DecoyX = 0

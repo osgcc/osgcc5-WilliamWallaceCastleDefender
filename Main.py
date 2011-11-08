@@ -595,7 +595,7 @@ def gameOver(points, windowSurfaceObj,fpsClock, desertBackground):
                         retry = False
 
         pygame.display.update()
-        fpsClock.tick(30)
+        fpsClock.tick(45)
     return retry
 
 #Enemy Function
@@ -604,7 +604,7 @@ def enemyGenerator(enemyList, maxEnemies,points):
     tmp = points
     if points < 75:
         tmp = 75
-    if x < (2*tmp/75) and len(enemyList) < maxEnemies: # chance enemy will be generated
+    if x < (3*(tmp/75)) and len(enemyList) < maxEnemies: # chance enemy will be generated
         x = random.randint(0,1)
         if x == 1:
             right = True
@@ -615,7 +615,8 @@ def enemyGenerator(enemyList, maxEnemies,points):
         speed += random.randint(0, 4)
         if random.randint(0, 100) < 50: # 50% chance enemy will be flying
             e = Enemyflying(right,speed)
-            if random.randint(0,10) < 3 * math.ceil(points/100):
+            #if random.randint(0,10) < 3 * math.ceil(points/100):
+            if random.randint(0,10) < 1:
                 e.boss = True
                 e.speed = 8
             else:
